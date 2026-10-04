@@ -1,0 +1,2462 @@
+[
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Cardigan Bay General Hospital Fundraising Dinner",
+    "keys": ["It would like to refurbish a section of the building.", "By paying for at least four guests"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "WALLACE TRANSPORTATION: TICKET",
+    "keys": ["He is a resident of New York.", "The time of departure from Chicago"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Nisa Miskin",
+    "keys": ["To describe a company's products", "By registering employees for comprehensive coverage"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Sonya Meadows 1:45 p.m.",
+    "keys": ["It is difficult to find parking there.", "She believes that a document is in her workspace."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "TO: Steven Joyce <sjoyce@fastmail.com>",
+    "keys": ["To provide a schedule for a special celebration", "A speech by a musician", "It will be the venue for the final event."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Eagle Canyon City Park",
+    "keys": ["To alert visitors of a problem", "They should only be approached under staff supervision.", "Some protective gear", "[4]"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Michelle Hanson [11:40]",
+    "keys": ["An advertising firm", "She thinks the project is going according to plan.", "He plans to get in contact with Ms. Johns.", "Provide a Web site address"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Hanlan’s Coffee Company — Ethical Purchasing Policy",
+    "keys": ["They are situated in several countries.", "Coffee farmers' children", "[4]"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Ping Software’s Head Honored as Tech Woman of the Year",
+    "keys": ["It was associated with a particular software type.", "She was Ping's first female CEO.", "It will offer programs at lower prices."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "City Trends Report — Valencia",
+    "keys": ["Improvements to a city's tourism Industry", "An updated tax system", "Its transportation time from Valencia has been shortened.", "It offers residents affordable homes."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Maxfield Financial Group",
+      "To: Bethany Aldridge <bethanyal22@totalmail.net>"
+    ],
+    "keys": ["To inform a customer of a change in correspondence", "They can be accessed from an online account at anytime.", "By selecting an option online", "It is the first one she has received.", "She paid a yearly charge to Maxfield Financial Group."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Announcement for Woodlands Business Owners:",
+      "Woodlands Merchants Association Summer Concert Schedule"
+    ],
+    "keys": ["A promotional opportunity for local establishments", "Fostering interaction between businesses and citizens", "Cosponsors can distribute flyers and samples at them.", "Cover the cost of handouts", "Pearson Trio"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Gunton City Council to Consider Blandfolk",
+      "Gunton Herald",
+      "TO Ronald Pinero <rpinero@dailymaily.com>"
+    ],
+    "keys": ["A corporation's plans to build a store", "Tum down a proposition from Blandfolk Superstore", "borders", "Some Chamber of Commerce members will attend a public hearing.", "She thinks that Ballas Boutique should be preserved."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Invoice Date: October 4",
+      "To: Alexander Svensson <alex.svensson@oresund.nl>",
+      "Kaiser Investment Services Company Newsletter"
+    ],
+    "keys": ["It did not take pictures for a booklet.", "It will have to pay a fee Of €100 for a revision.", "To go over a company's achievements", "done better than", "It distributed brochures to potential US clients."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "YY\" TO: El Paso Center for the Digital Arts <questions@elpasodigital.com>",
+      "El Paso Center for the Digital Arts: Upcoming One-Day Classes May 7-12",
+      "El Paso Center for the Digital Arts: Class Registration Form"
+    ],
+    "keys": ["To request information on some courses", "Some of its members can take a class in wedding photography.", "dedicated to", "$30", "Bring his personal photography equipment"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Fit Body Monthly Subscription Cancellation",
+    "keys": ["Mail a document", "He has a subscription with a similar magazine."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "MEMORANDUM",
+    "keys": ["An annual company gathering", "Send an e-mail to a colleague"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Drake Hartford 10:38",
+    "keys": ["She thought the paint would not match.", "Light brown"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Dear participants,",
+    "keys": ["To tell participants about events", "It will begin with an introductory speech.", "The Granville Room"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "NOTICE",
+    "keys": ["It recently lost its financial aid.", "To adjust for changes in inflation"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Ocean Breeze Resort",
+    "keys": ["To describe options for activities", "Boats will be used on some tours.", "An animal park"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Corrine Dealba 4:32 P.M.",
+    "keys": ["It has asked a firm for a project presentation.", "Measure a potential project space.", "He accepts the offer of a ride to an office.", "Do a job in her coworker's absence."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Sampat Labs",
+    "keys": ["A makeup manufacturer employee", "It makes its research data available online.", "[1]"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Shopping for Free?",
+    "keys": ["A simulation game for mobile devices", "It allows users to create multiple characters.", "He is developing a new game.", "[2]"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Business Insider",
+    "keys": ["To describe how a business became successful", "He made significant changes to increase revenues.", "Advertising on social network sites", "A retail company will increase in size."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Schedule For: Linda Atkins",
+      "To: Samantha Larson <s.larson@gentrydrivers.com>"
+    ],
+    "keys": ["To inform a new employee of some job details", "He prepares Ms. Atkins’ appointment schedule.", "Mr. Choi", "April 18", "She will speak at a convention."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Toronto Tribune July 8",
+      "Celebrate the First Edge Festival in Toronto: July 8-14"
+    ],
+    "keys": ["It consists of events at several different venues.", "Obtain directions to performances", "He was in Scotland the year before.", "variety", "Hold a similar event in Sydney"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "http://www.piedmontlimousine.com/bookings .",
+      "TO: Benjamin Lopez <blop@neurotech.com>",
+      "Piedmont Limousine Company: Ride in Style!"
+    ],
+    "keys": ["It has service desks at airports and stations.", "A cash voucher", "He is making a booking for a guest.", "A deposit payment must be given up.", "He will wait for William Bail on a station platform."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Sarah Andrews <s.andrews@warnerlibrary.com>",
+      "Warner City Library",
+      "3-D Printer Workshops"
+    ],
+    "keys": ["A learning opportunity", "concerning", "The discussion led by library staff", "It has multiple locations in the same city.", "It can accommodate a dozen participants."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Kentley Farm, 5948 Coast Road, Abbotsford, B.C. .",
+      "Get $3 off Peakland Dairy’s New Organic Ice Cream!",
+      "TO Marian Kentley <mkentley@kentleyfarm.co.ca>"
+    ],
+    "keys": ["It will release a new product line.", "capacity", "A delivery to Spruce Road", "He was unable to purchase raspberries from Ms. Kentley.", "It gives coupons to visitors at its Abbotsford facility."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "It’s time for the annual sale at Shoe Gold!",
+    "keys": ["A promotional offer on footwear", "It will match competitors’ prices."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Susan Learned [4:32]",
+    "keys": ["There is no serious issue with a purchase request.", "Some work desks"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Boardwalk Industries Employee Bulletin Board Posting",
+    "keys": ["To find a car for sale", "He prefers a particular model of car."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "CHANGES IN CCT NEWS",
+    "keys": ["A newly hired employee", "He worked with Mr. O’Connell before.", "Broadcaster"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "SEASIDE HALF MARATHON",
+    "keys": ["It accepts entrants from around the country.", "An article of clothing"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "www.bennetthouse.org/Vvisit",
+    "keys": ["Booking ahead of time for large groups", "Guided tours of the home", "It closes temporarily during periods with few tourists.", "[4]"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: All Staff",
+    "keys": ["To remind employees about some renewal work", "It is a five-story structure.", "Expect forthcoming details from their supervisor"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "SSS SSS SSS SSS ae",
+    "keys": ["A time to pick up a purchase", "By getting others to join a Web site", "It can customize all its menu items."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Helen Coulter [July 15, 9:54 a.m.]",
+    "keys": ["His coworker finds Ms. Painter's request acceptable.", "At 11:30 A.M.", "It will occasionally have production work at night.", "Some team members will return from a holiday."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "MEMO",
+    "keys": ["To provide relocation instructions to staff", "Workspace assignments will be posted.", "It will be split up into two groups that will work on different floors.", "[4]"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Rebecca Katrinsky <r.katrinsky@turnipbooks.com>",
+      "To: Carl Deluth <carldel@genericpost.com>"
+    ],
+    "keys": ["To refer a friend for a position", "problems", "She showed an article about Mr. Deluth to her colleagues.", "It might require illustrations that spread across two pages.", "One day"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Dakota Logistics",
+      "To Sarah Chang <schang@dlogistics.com>"
+    ],
+    "keys": ["They have about a month to act on revised policy.", "He has been with the company for less than five years.", "The sum that workers can put toward a pension.", "Pay the maximum amount toward a pension scheme.", "She is in charge of a department at Dakota Logistics."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Association of Materials Engineers (AME)",
+      "To: Melinda Rose <m.rose@ame.org>",
+      "Association of Materials Engineers (AME)"
+    ],
+    "keys": ["A tour of a facility", "It registered as a conference sponsor.", "Further promotional documents", "They do not apply to participants of the AME’s high school program.", "$460"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Grand Deville Hotel: Five-Star Accommodation on the !",
+      "TO: <questions@devillevancouver.co.ca>",
+      "BCTI Biological Research Center"
+    ],
+    "keys": ["A new building will be opened in its city center.", "Outdoor sports and recreation facilities", "of considerable significance", "In the ballroom", "He can have a free breakfast on September 28."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "NOTICE",
+      "ee eee eee",
+      "From: Jill Addis (555-2737)"
+    ],
+    "keys": ["It will result in noise during working hours.", "Locations of temporary bus stops are accessible online.", "On August 29", "Bus 26", "He will meet with Ms. Addis over lunch."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Mr. Joseph Sawyer",
+    "keys": ["To recommend a former staff member for a job", "She was promoted to the level of supervisor."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Sharon Van Deist 9:38",
+    "keys": ["Try out a vehicle that is for sale", "He is available at a specific time."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "CTISTOMER ANVISORYV",
+    "keys": ["An appliance seller", "They have an appointment for after 8 P.M."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "MEMO",
+    "keys": ["Company employees", "Getting supplies from sustainable manufacturers"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Atlanta, Georgia — The National Aviation Authority",
+    "keys": ["To provide news about an airline", "Partnering with another airline", "Some of them focus too much on costs."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: Kendra Clark <kclark@zoommail.com>",
+    "keys": ["To provide information on some new products", "Stamp collectors", "By visiting a branch of the post office"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "May 7",
+    "keys": ["A gym product retailer", "By placing an order online", "It includes spare parts."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "March 14",
+    "keys": ["To provide details about an organization", "It helps underprivileged people.", "Provide translation services", "[3]"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: All staff",
+    "keys": ["To confirm arrangements for an event", "There will be a short break before dinner.", "To notify her of dietary restrictions", "[3]"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Sa 7 Batata theta cinerea aie",
+    "keys": ["Regina", "He cannot confirm that he will be able to travel to Vancouver.", "Send Mr. Rembrandt to the conference in his place", "She made hotel reservations for last year's conference."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "TO: Kim-Li Pham <pham@rainbowprinters.org>",
+      "TO: Stephan Faubert <stfau@sondheimenterprises.com>"
+    ],
+    "keys": ["To request payment of a bill", "He is a layout designer for commercial publications.", "regarded", "Attending an industry fair", "Brochures"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Cleveland Lakewood Sports Center",
+      "Cleveland Lakewood Sports Center: Rental Information"
+    ],
+    "keys": ["The rock wall is strictly for experts.", "A discount of 20 percent", "Three", "It is for off-peak hours.", "Their own sports facilities are temporarily unavailable."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "TO: Purchasing department <purchasing@officeworld.com>",
+      "Office World",
+      "Office World"
+    ],
+    "keys": ["search", "To purchase some supplies in bulk", "By wiring money to an account", "It is located outside California.", "The adhesive paper"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Customer service <cservice@portamibags.com>",
+      "Customer Review: Porta Bello Mobile Device Bag",
+      "Portami Bags"
+    ],
+    "keys": ["It comes in a variety of sizes.", "To promote its facility", "prominently", "It customized an order for her in a color not offered.", "It was able to secure a discount on its order."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "February 20",
+      "To: Joann Majors <j.majors@homemail.com>",
+      "We Save money on your international calls! 7"
+    ],
+    "keys": ["It offers unlimited texting to any location.", "She will get a free period of service if she takes Mr. Farmer's suggestion.", "A special number", "It offers customers several subscription plan durations.", "Send details on the free phones being offered"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "You are invited to a seminar on",
+    "keys": ["He teaches in the field of economics.", "A book signing event."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Hightower Electronics",
+    "keys": ["To announce a change in policy", "They will undergo a performance evaluation in June."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Melinda Carmichael 9:52",
+    "keys": ["He will not be at home when the client visits his apartment.", "She is certain that a client is unavailable in the evening."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Landmark Art Auction Returns for Its 25th Year",
+    "keys": ["It will feature a number of important pieces.", "She is expected to earn $1 million alone.", "It has benefited financially from sales at past auctions."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "TO Barry Maddocks <bmad@appletonman.com>",
+    "keys": ["An advertising employee", "They include a presentation at Appleton’s main office."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: Robert Crowley <crowrob@sunshineresorts.org>",
+    "keys": ["Made some new acquaintances at an event", "She has been with Oleandar Hotel for six years.", "[4]"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Business Buzz Weekly",
+    "keys": ["To compare opinions on sustainable business practices", "Fewer than 10 companies have modified their practices.", "People are not willing to pay more for ethically produced goods."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Gail Royce 7:32 p.m.",
+    "keys": ["She expected more media members to attend an event.", "Make some equipment adjustments", "Its press zone will be expanded.", "A jewelry manufacturer"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Baxter Communications",
+    "keys": ["To explain agreement guidelines", "It offers multiple services to customers.", "If they damage a cable box", "[3]"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Outer Reaches Celebrates 40th Anniversary with",
+    "keys": ["To announce a special event", "It accumulated fans over a decade-long period.", "By pioneering the use of certain special effects", "attributed"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "FURRY FRIENDS",
+      "To: Austin Wright <awright@glibmail.com>"
+    ],
+    "keys": ["In two days", "The total cost of his order", "It ships items through a separate company.", "He was unable to locate a product.", "Woof Master"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To Elizabeth Mackie <emack@burlingtontowers.com>",
+      "Burlington Towers, 584 Denver Ave., Larchmont WA 99487"
+    ],
+    "keys": ["It is located in a building with a lobby.", "They may incur an extra charge.", "To notify an administrator of billing errors", "They should include an additional monthly charge for parking.", "401C"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Helping Houses",
+      "Event Raises Funds for a Good Cause",
+      "To: Adam Johansson <adamj@helpinghouses.com>"
+    ],
+    "keys": ["Visit an event venue", "A director announced program changes during opening remarks.", "responsibility", "A stay at the same venue as the fundraiser", "It received funding from the city government."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To Liz Perry <lizperry@lightlife.com>",
+      "FIRST AURORA JOB FAIR: Corporate Participant Confirmation Form",
+      "Aurora’s First Job Fair"
+    ],
+    "keys": ["It will not charge some participants for attending.", "To make a special request for an upcoming event", "It is owned by Moore Investments.", "His company will set up a booth near Aurora City Arena’s entrance.", "She paid a reduced rate for a table."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Morning Glory Guest Cottages",
+      "Morning Glory Guest Cottages, Colorado",
+      "To: Joel Steinbrenner <j_stein@webbwork.com>"
+    ],
+    "keys": ["Post more images of scenic local areas", "She has not fully paid Mr. Steinbrenner for his services.", "It holds a weekly social event.", "He is a chef specializing in the preparation of Greek cuisine.", "Went canoeing on Grand Lake"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "MEMO",
+    "keys": ["To notify employees about a change in personnel", "By submitting a signed document"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "West University Writing Center",
+    "keys": ["To promote various services offered at a facility", "It is open seven days a week."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Lafavette County Park",
+    "keys": ["A bike rental stand", "Take care when crossing a road"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Hilda Jacobsen (9:37 am]",
+    "keys": ["He is working on plans for an interior.", "She hopes to acquire Digitek as a new client.", "He consents to accompanying his colleague to a meeting.", "Return to his workplace."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "MyPost.com",
+    "keys": ["Customers ordering items from US Web sites", "It has storage facilities in the US.", "They are priced according to weight and size."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Jessica Jang 9:27",
+    "keys": ["He is employed in the human resources department.", "She will find out whether all the employees have been paid."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Report for City Council Executive Meeting, March 18",
+    "keys": ["Moving the expressway farther north", "It has a low number of visitors.", "They may oppose a detour plan."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: Marcie Camden <mcamden@dawsoninc.com>",
+    "keys": ["To ask for a preference for an order", "She purchased items on the Internet.", "[2]"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "The Armitage Comes to Fullerton",
+    "keys": ["To offer information on an upcoming museum event", "It sank for reasons that are unknown.", "thorough", "It will admit students at a reduced price."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Davenport Accounting",
+    "keys": ["To remind employees about a planned activity", "Some staff will have to do overtime next week.", "Saving needed files", "[2]"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "TO Customer assistance <recall@generixmotors.com>",
+      "Generix Motors Announces Recall of Sports Vehicle"
+    ],
+    "keys": ["Technical problems with a product", "Owners of vehicles with possible safety issues", "Wrote a press release", "To inquire about a dealership", "His vehicle requires a computer system update."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "July 2",
+      "Donnelly & Chung Publicity...Your Branding Experts!"
+    ],
+    "keys": ["Promoting a corporate brand", "He was not charged a fee for his session with Ms. Draper.", "A co-owner of PS Baked Goods", "Confirm her availability for a meeting", "Descriptions of items for sale"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Maggie Flowers <m.flo@fastmail.com>",
+      "TAILWIND AIRLINES SS",
+      "To: Customer Service <cs@tailwindairlines.com>"
+    ],
+    "keys": ["To pursue some claims", "A car rental receipt", "make known", "Their hotel rooms cost over $135 each.", "She may have to wait until July to be repaid."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Eduardo Ferrer <edfer@greentech.com>",
+      "Business Bulletin",
+      "12th Green Technology Conference"
+    ],
+    "keys": ["A special luncheon", "At 1:30 P.M.", "Its adoption is being opposed by some people in government.", "crucial", "He led a panel discussion on funding green projects."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "List of Active Loans for Westerburn Public Library Member No.",
+      "To: Melissa Terrance <mellit@greatmail.com>",
+      "Westerburn Public Library Online Renewal Policy"
+    ],
+    "keys": ["Extending loans using the Internet", "Its late fees can be paid through online accounts.", "Someone else made a request for it.", "Maya Teller’s book may be returned to Westerburn Public Library.", "A History of Medicinal Plants"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "840 B Street, San Diego, CA 92101",
+    "keys": ["He changed addresses.", "Wendy Shore"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Hilltop Spa and Wellness Center",
+    "keys": ["Produce sales data", "It allows people to use reward points as payment."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Conference Room Reservations",
+    "keys": ["To explain an office procedure to staff", "Only one of them is assigned to two floors.", "The hours for some of them have been extended."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Dorothy Lee [4:15]",
+    "keys": ["He lacked some necessary information.", "She prefers that Mr. Parker’s flight be paid for without points."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "The Hyperbar is a Futuristic Solution to a Present-day Problem",
+    "keys": ["It can charge up to 750 mobile devices at a time.", "Continue testing of the Hyperbar outside of Sudan."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: All Staff",
+    "keys": ["It has unnecessary expenditures on graphic design.", "Reduce the company’s reliance on outside help", "[1]"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Hadenfield Elementary School",
+    "keys": ["Students may stay for after-school programs all week.", "By completing a document beforehand", "They vary according to grade level."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Welcome to RMP Financial Trust’s live chat service. How can I help you?",
+    "keys": ["She does not have access to some information.", "She has been abroad for at least two years.", "Open a checking account", "Go to a financial institution personally"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "STRYKER AMUSEMENT PARK",
+    "keys": ["A month of festivities", "At the food court", "One of its features has been recognized by a publication.", "A special screening of Darkness Rises will occur."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Edmond Estrada Wins Albuquerque Judge’s Seat",
+    "keys": ["A lawyer’s selection for a role", "She influenced Mr. Estrada’s legal career.", "He represents a real estate company.", "[2]"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Lake Godard Booking <booking@lakegodardski.com>",
+      "LAKE GODARD SKI RESORT"
+    ],
+    "keys": ["Training for professional skiers", "within reach", "She prefers accommodations with a mountain view.", "They can receive free lessons from an expert instructor.", "Make time to see a performance"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "BigBuy",
+      "To: Angela Porter <a.porter@bigbuy.com>"
+    ],
+    "keys": ["To fill her in on a recent discussion", "It has had issues concerning absent staff.", "Provide training to seasonal employees", "Before the 25th of November", "Submit documentation for emergency leave"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "os Brayman Museum of Art",
+      "To: Henry Kang <h_kang@braymanart.org>",
+      "Art Vibe Magazine"
+    ],
+    "keys": ["A special event following a renovation", "She plans to accompany children to an opening exhibit.", "Proof of purchase", "It is expecting to receive some exhibit items on September 27.", "A refund of a payment"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "From: Neil Adams <nadams@technotel.com>",
+      "Office Interiors and Supplies",
+      "MEMO"
+    ],
+    "keys": ["To accommodate incoming staff", "Techno Tel has placed previous orders with Office Interiors and Supplies.", "Research and development", "The order is applicable for shipping charges.", "It will not satisfy Mr. Adams’ delivery date requirement."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "From; Selena Gambrell <sgambrell@rochester.gov>",
+      "The City of Rochester Bid Submission Application Form 78-C",
+      "Rochester Times"
+    ],
+    "keys": ["A plan for the renewal of a transportation hub", "It has received adequate funding.", "An approved budget", "He will personally visit a city office to hand in some documents.", "It provided a company description with an application."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: All staff",
+    "keys": ["To inform employees about a coming event", "Nashville"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Helen Moon 2:20 P.M.",
+    "keys": ["She is fine with running an errand.", "It plans to distribute some brochures to event attendees."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: Adam Webster <awebster@connex.com>",
+    "keys": ["A building occupant", "It is equivalent to one month’s rent."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Nairobi International Marathon Draws Attention",
+    "keys": ["It will have a larger number of participants.", "It has experienced an increase in tourism.", "At City Stadium"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Accounting Software Version 1",
+    "keys": ["To promote a computer program", "It sells software on a yearly subscription basis."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Madison Community Leisure Center",
+    "keys": ["They will be facilitated by qualified adults", "By visiting a Web site", "Two weeks"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Pat Fiorentino 3:10",
+    "keys": ["Come up with suggestions to present at a city meeting", "He recognizes the benefit of having media involved.", "Collecting disposed garbage more frequently", "She is the head of the sanitation department."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "A Night of Song",
+    "keys": ["They are free for those who fulfill a certain purchasing condition.", "It will include an autograph signing session.", "[4]"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: Stephen Haggerty <s.haggerty@mailbag.com>",
+    "keys": ["A requested item is not readily available", "He is sending items to different recipients", "A delivery will proceed.", "Follow a link to a Web site"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Lester Beebe Hits Stage in South Bend",
+    "keys": ["An upcoming theatrical production", "It had a successful run in New York.", "depicted", "[2]"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Ergo Office Works Online Order Form",
+      "Ergo Office Works"
+    ],
+    "keys": ["They suffer from pain due to long periods of sitting.", "They minimize eye strain.", "It will pay $200 for a delivery fee.", "Item 3665", "A workplace will close for the day."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Charlotte Hoffman <hoffman.charlotte@burke.de>",
+      "January 27"
+    ],
+    "keys": ["To inquire about booking a venue", "Some of its staff previously stayed at the hotel.", "Breakfast is not needed on May 8.", "Single rooms", "It offers a free bus service from the airport."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Ruben St. Claire <rstclaire@stclaireeditwrite.com>",
+      "St. Claire Editing and Writing Services",
+      "http://www.stclaireeditwrite.com/about"
+    ],
+    "keys": ["He is currently employed at an educational institution.", "To make a business proposition", "Sportsworld Outfitters", "Provide a price quotation", "She underestimated the amount of time needed to do some research."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "TrueBlue Mart",
+      "The True Blue Mart shuttle stops at these designated locations.",
+      "TrueBlue Mart Offers Rides to Local Customers"
+    ],
+    "keys": ["They felt it was difficult for some of their clients to get to the store.", "The vehicle sometimes skips a stop at Glengarry University.", "Horizons Crossings Recreation Club", "She has some mobility issues that make it difficult for her to walk.", "poses"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Fresh & Sharp Grand Opening Sale",
+      "Fresh & Sharp",
+      "Stockton, May 9"
+    ],
+    "keys": ["To announce the future opening of a retail shop", "achievement", "Spending a certain amount entitles clients to another discount.", "It was located on the ground floor of Old Ridge Mall.", "She was not eligible to receive a complimentary item."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "EVERIDGE CERTIFIED",
+    "keys": ["Investment consultation", "To get information about ECA employees"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "The New Hampton Professionals Society",
+    "keys": ["Refreshments will be served to all guests.", "Famous classical music composers"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Gary Perkins (1:25 p.m]",
+    "keys": ["He believes he will be able to find other helpers.", "She will be asked to work on the 18th."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Time Out Vendors",
+    "keys": ["The cost of renting it out", "Modified a previous machine model", "It accepts paper money."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Come to the Portland Holiday Gift",
+    "keys": ["Holiday shoppers", "It is free for 10-year-old children.", "It has several exhibit halls."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: Jude Feldstein <jfeldstein@lbm.com>",
+    "keys": ["To respond to a customer’s inquiry", "A reduction on a monthly charge"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "The City of Burbank provides a number of additional services for the benefit of its residents.",
+    "keys": ["Details on other services", "Drinking water safety testing", "Elderly people needing to go downtown", "[3]"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Julianna Lopez 10:22 a.m.",
+    "keys": ["It is supplied by firms in at least three countries.", "A company booklet", "He will work on a presentation right away.", "Provide responses to financial inquiries"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "May 25",
+    "keys": ["To provide an account of an organization", "A representative of a corporate donor", "Its board approved two upcoming projects in Asia."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Midland Zoo Opens Crocodile Farm",
+    "keys": ["function", "A wildlife viewing spot", "Begin showing educational films", "[3]"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Stop and Sew",
+      "Stop and Sew - Basic Fabric"
+    ],
+    "keys": ["It has exceptional customer service.", "preference", "She wants to stay current with the latest fashions.", "Polyester", "It is more expensive than other fabrics."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Unique Biz Magazine",
+      "For-U-Storage"
+    ],
+    "keys": ["They find it hard to part with some items.", "It uses box sizes as a basis for charges.", "Deliver containers for storage.", "He pays to store a deluxe-size box.", "There will be charges for storing beyond three months."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Announcing Babson’s Annual Clearance Sale",
+      "Sales Summary",
+      "To: Margaret Atkins <m.atkins@babsons.com>"
+    ],
+    "keys": ["To prepare the store for new merchandise", "It manufactures its own brand of products.", "Its earnings rose in September despite being excluded from a sale.", "Men’s", "She is the head of the marketing division."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "Your Favorite Business Periodical, Big Success Magazine, Presents its",
+      "To Harrison Marcoux <hmarcoux@skateheaven.ca>",
+      "Big Success Magazine Leadership Course Registration Form"
+    ],
+    "keys": ["It will take place over a five-day period in April.", "Selling his skateboards over the Internet", "She has recently gone into business for herself.", "It can be paid for in installments.", "Waterloo"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "June 4",
+      "TO: Rory Dansen <rorydansen@dvmail.com>",
+      "FOREWORD"
+    ],
+    "keys": ["A request for an introduction to an original work", "She required some further details from Mr. Dansen.", "A copy of Tony’s Tune", "Getting inspiration", "It was given a positive review by Ms. Harkness in Print Media Magazine."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "To: Frederick Montaigne <FredM@burgundycapital.com>",
+    "keys": ["To explain a problem with an online service", "A security code"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Mitchell Roach (11:27 a.m]",
+    "keys": ["Brighton Industrials", "An appointment for Thursday morning is suitable."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Northeast Internet Marketers Association (NEIMA)",
+    "keys": ["Padma Singh", "It continues for a second day."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Tax Deductions for Telecommuters",
+    "keys": ["An employee handbook", "Call records may be needed to subtract some charges."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "From: Mitchell Harcourt <harcourt@tuton.org>",
+    "keys": ["To describe career options for a student", "In an office in downtown Edmonton", "Tuition payment"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "The Dublin Academy of Fine Arts",
+    "keys": ["It is free for DAFA instructors.", "She has worked as an artist for many years.", "An opening reception"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "NOTICE",
+    "keys": ["To apprise staff of a pending renovation", "On the company’s intranet site", "[2]"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "First Global Expands Further",
+    "keys": ["To announce plans for a new facility", "By relying on past profits", "Smartphone manufacturers buy their products.", "[4]"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "Beatrice Swenson [1:22]",
+    "keys": ["Images for a retail site taken by a professional", "She will ask a photographer to retake some pictures.", "She also thinks that models should be used.", "Payment system developer"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": "TO: Benjamin Pinkerton <benpin@ponyexpress.com>",
+    "keys": ["To inform a colleague about a schedule", "The start of a project has been postponed.", "It is convenient for the visitors.", "A preferred date"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "TO: Rachel Lamington <raclam@lamingtonranch.co.nz>",
+      "Lamington Ranch Proves Cooperative Farming Can Be Successful"
+    ],
+    "keys": ["Applying for a bank loan", "It was inspired by a similar community in another country.", "To ask for an in-person meeting", "They could benefit from some free publicity.", "Visit Masterton"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "The Career Development Center",
+      "To: Gary Flores <gflores49@thmail.com>"
+    ],
+    "keys": ["To extend some helpful advice", "Because", "Distribute it among family members", "Employed and retired adults", "He can attend an event on Thursday for free."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Dave Saxon <d.saxon@pba.org>",
+      "CAPITOL BANK LOAN APPLICATION",
+      "Pittsburgh Business Association (PBA) presents:"
+    ],
+    "keys": ["Give a talk on matters pertaining to law", "It includes an activity led by a sponsoring organization.", "He is familiar with the subject of a seminar.", "She plans to hold classes at her establishment", "It will be evaluated by Mr. Ashley."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "To: Troy Seeger <t.seeger@mfi.com>",
+      "Fashion Guide Magazine",
+      "The Meredith Fashion Institute (MFI) invites you to attend our annual spring fashion show"
+    ],
+    "keys": ["It coincides with the launch of a brand.", "Profits from it will go toward helping aspiring designers.", "To get a chance to recover some costs", "He has helped style models for a magazine.", "They may be sold at clothing stores in the future."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "2",
+    "cat": "HACKER",
+    "fl": [
+      "PFS Service Request Form",
+      "TO: John Boone <jboone@pfssystems.com>",
+      "Protect Yourself with PFS"
+    ],
+    "keys": ["They provide their services in several states.", "completed", "They are not as likely to activate unintentionally.", "Wet pipe", "A problem resolution within two days"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Pick of the Week",
+    "keys": ["A recipe book", "She has released several books"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: All staff <all@bendacorp.com>",
+    "keys": ["Replenishing basic office necessities", "They are responsible for approving employees' purchases"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Nicky Candela 11:01 A.M.",
+    "keys": ["An event caterer", "He would like to confirm the details of a request."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Seafoam Park",
+    "keys": ["At 8 P.M.", "The location of a parking lot"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Notice for Aston Towers Residents",
+    "keys": ["To tell about upcoming maintenance work", "It has been demanding changes.", "Schedule visiting times with residents"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Bluecoats Look to a Brighter Future",
+    "keys": ["The relocation of a sports team", "It previously won first place in a competition.", "It has yet to be given a name.", "[3]"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Gina Adenan 10:09 A.M.",
+    "keys": ["Broadcasting the news on television", "It sells products internationally.", "He has previously worked on a product recall.", "He will start instructing the employees."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "www.visitindonesia.com",
+    "keys": ["To advertise travel packages", "Surfing in the sea", "[3]"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "MEMORANDUM",
+    "keys": ["To inform workers about regulations", "It can be used to evaluate work efficiency.", "From January"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Thoughts on Sharing Economy",
+    "keys": ["Opposition to an economic trend", "It benefits individuals more than traditional companies.", "A new mayor was elected to office.", "Local businesses are essential to its economic development."]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Bulk Land Supermarket",
+      "Bulk Land Supermarket Online Order Form"
+    ],
+    "keys": ["It does not have any physical stores.", "ease", "Cheaper prices on products", "He has placed orders with Bulk Land Supermarket before.", "A coupon for a future purchase"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "March 23",
+      "TO: Todd Banks <toddbanks@tradevent.com>"
+    ],
+    "keys": ["It provides vendors with complimentary Internet access.", "On an application form", "It had satisfactory results at an event in Denver.", "A reservation procedure", "joining"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Port Royal Cruises!",
+      "TO: Evan Baughman <evbau@pealeint.com>",
+      "Port Royal Cruises"
+    ],
+    "keys": ["The deck party included very good food.", "It can be viewed in online pictures.", "To discuss a possible staff activity", "It can be submitted in person.", "Pay extra to have clothes washed"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "FILMOGRAPHY: Henry Spencer, actor",
+      "http://www.screenactiontalkshow.com",
+      "TO: Bob Voorhies <bobv@genericapost.com>"
+    ],
+    "keys": ["He performed in leading roles in all productions.", "She worked with Henry Spencer in her latest film.", "A talk show host", "He had a query about Bandits of Time II during a show.", "To allow a program recording to be publicly released"]
+  },
+  {
+    "name": "TEST 1",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Health Note",
+      "To: Ernst Hopson <ehopson@psychguide.com>",
+      "REQUEST FOR PERMISSION TO REPRINT AN ARTICLE"
+    ],
+    "keys": ["Some advice regarding the consumption of supplements", "It does not approve all petitions for reprints.", "It is not available online.", "It will not incur a charge for printing.", "At the beginning of May"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Martin Bailey",
+    "keys": ["A list of products", "It has done business with Shipson Bicycle Parts before."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Town of Shakersfield",
+    "keys": ["To announce a construction project", "It has a plaza that people can walk to."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "FROM: Pierre Grenier <gren@grenierfashions.com>",
+    "keys": ["To notify a client that a garment is ready for pickup", "Attend an awards ceremony"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Fumiko Nakamura 10:50 A.M.",
+    "keys": ["At 2:00 P.M.", "He thinks that the old servers are slower than the new ones."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "PENDLETON ICE RINK",
+    "keys": ["To notify visiting skaters of a facility’s rules", "It is open to the public 24 hours a day.", "By visiting an employee at a counter"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Get Cash for Your TRASH!",
+    "keys": ["A used goods business", "Its selection of products is constantly changing.", "Donate it to youth organizations"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Local Chorus Tryouts",
+    "keys": ["Residents interested in performing", "Willingness to be a volunteer", "[3]"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Gloria Arden 8:20 A.M.",
+    "keys": ["The reassignment of some employees", "It could affect sales of a product.", "It is responsible for drafting user instructions.", "She wants more details concerning a plan."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Barriston City Unveils New Development Project",
+    "keys": ["To provide details about an urban renewal project", "It will have signs displaying maps of the entire city.", "attract", "City government fund"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "EZ-R-Printing Services:",
+    "keys": ["It allows clients to design their own documents.", "Complimentary business cards", "Check out prices", "[3]"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Recruitment Fairs",
+      "From: Andrew Jansen <ajansen@coftoncollege.co.uk>"
+    ],
+    "keys": ["Participate in events to recruit students", "Its ratio of teachers to students is high.", "Staff will be paid overtime for attending it.", "They are residents of Leeds.", "He will be busy with work during the week."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Fit Prime Gym",
+      "To: Cindy Norenski <cinnoren5@gladmail.net>"
+    ],
+    "keys": ["To enroll her family at a fitness center", "The applicant's occupation", "He recommended that Ms. Norenski try the gym.", "It closes at an earlier time on Sundays.", "Her older daughter is entitled to additional benefits."]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "FRANCHISE MASTER",
+      "24th Annual Franchise Expo",
+      "Tampa Weekly"
+    ],
+    "keys": ["Financial support", "He budgeted $20,000 to invest in a company.", "system", "It grouped industries together into sections.", "Clean Sweep"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Majestic Porcelain",
+      "To: Lorraine Plummer <l.plummer@britmail.com>",
+      "To: Joel Nesbitt <j.nesbitt@majestic.com>"
+    ],
+    "keys": ["She has never transacted with Majestic before.", "It packs items individually for protection.", "$42.99", "Reduced pricing on large shipments", "Super Mail Carriers"]
+  },
+  {
+    "name": "TEST 2",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "MARKETING POSITIONS AVAILABLE: Sav-Tech Incorporated, San Bernardino",
+      "TO Mia Choi <miachoi@headmanad.com>",
+      "Headman Advertising Agency"
+    ],
+    "keys": ["A seller Of application for mobile", "They have insufficient experience in marketing.", "Discussed some job vacancies with a coworker", "She contacted a marketing manager at Sav-Tech.", "A current supervisor of Ms. Choi"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Are you letting high prices get in the way of your fitness goals?",
+    "keys": ["An exercise equipment store", "It retails its merchandise solely online."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "The Ramford Center for the Arts",
+    "keys": ["To recruit a new employee", "It allows its staff to attend exhibits for free."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Frank Cameron 2:22 P.M.",
+    "keys": ["A device is still in the process of being tested.", "She doesn’t think computers will be shipped on a planned date."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: All TechBase Staff",
+    "keys": ["It is a computer-related company.", "Forming effective sales teams", "Attendees will be given a copy of a book."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Sheltonville Town Council",
+    "keys": ["To invite participation in a public discussion", "He will facilitate a public forum."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Belajar University to Open High-Tech Hub",
+    "keys": ["It is trying to attract students from diverse areas of the nation.", "A fast railway connection", "Local citizens will have more employment opportunities."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: Carolyn Shah <cshah@qrcbooks.com>",
+    "keys": ["To promote a publication’s release", "Its customers include university students.", "By mailing a document", "[2]"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Clara Dalton [2:01 P.M.]",
+    "keys": ["An art gallery", "On Saturday", "She thinks a school may be a good place to promote an event.", "Updating a Web site"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Adam Suzuki",
+    "keys": ["To describe some beneficial developments", "It offers interest-free installments for up to one year.", "[2]"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Health First Magazine",
+    "keys": ["The release of workout products", "It can be purchased in select locations.", "advantage", "It will include a new feature in its upcoming products."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Come to the SRA’s Annual Wine Tasting Fund-raiser!",
+      "SRA Fund-raiser Food and Wine List"
+    ],
+    "keys": ["It will take place throughout the weekend.", "exclusive", "To enter to win a bottle of wine", "Guests will be served meals at their tables by staff.", "Sparkling wine will be available to bid on."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Notice to Visitors",
+      "To: Customer Relations <relations@ncapz.com>"
+    ],
+    "keys": ["It is not usually held during the summer.", "It was designed by a well-known chef.", "To make a complaint about a situation", "She went to the park after October 1.", "A partial return of a payment"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Tea Tree Eco-Resorts Set to Open in Mexico by Year’s End",
+      "Tea Tree Eco-Resorts, Mayan Riviera",
+      "Tea Tree Eco-Resorts, Mayan Riviera"
+    ],
+    "keys": ["Its Mexican resort is the company’s largest yet.", "observing", "Beach party", "It offered satisfactory levels of cleanliness.", "He and his wife saw some wild animals."]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "February 4",
+      "TO Florence Ingram <f.ingram@homesteadprop.com>",
+      "EVENT RESERVATION CONFIRMATION: Grand-Mont Hotel"
+    ],
+    "keys": ["To confirm an intention to resign from a position", "A monetary incentive", "Plan a retirement celebration", "She booked an event venue under budget.", "Some audiovisual equipment"]
+  },
+  {
+    "name": "TEST 3",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "http://www.portkeyclassifieds.com/realestate/rentals",
+      "From: Neil Kaplan (555-3004)",
+      "NOTICE: All Tenants"
+    ],
+    "keys": ["A parking spot", "He can move into a unit from August 30.", "The owner of a residential unit", "Park his vehicle at the DownTown Parkade", "It closes its office on weekends."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "The Committee for",
+    "keys": ["An exposition for overseas education", "By presenting the card near a hall entrance"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Space Science Museum",
+    "keys": ["Temporary facility closures", "Some of its venues will be open to the public during construction."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: Joseph Hillier <j.hillier@romanos.com>",
+    "keys": ["Enter into a supply arrangement with a dairy", "List dairy items to be sold"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "The Millsboro Water Department is calling on all area students to participate in its",
+    "keys": ["To publicize a local event", "It released a series of posters on water usage last year.", "Hand out calendars with student art to its clients"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Dawn Konrad 4:48 P.M.",
+    "keys": ["She will be working extra hours tomorrow.", "She thinks he is more qualified than Mr. Martin."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Send Yourself To The Next Level",
+    "keys": ["ability", "It protects the joints while in use.", "At athletic goods shop"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "WINSPEAR HOTEL",
+    "keys": ["To make a complaint about a stay", "He was given vouchers for a hotel stay", "[2]"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Pure Mix",
+    "keys": ["To respond to a prior inquiry", "They are all completely organic.", "They have an ingredient he cannot consume.", "Speak to a doctor before taking dietary supplements"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "A Very Fruity Idea",
+    "keys": ["The work of an organization", "Turns it into snacks", "Some of the collected produce", "[3]"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Cheryl Stone [3:48]",
+    "keys": ["It is aimed at securing a contract.", "They are considering offers from several businesses.", "He is proficient in technical matters.", "She will call Harper Telecom."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "CITY OF GRIGGSTON PUBLIC MEETING NOTICE",
+      "Griggston City Hall"
+    ],
+    "keys": ["It had some issues with its road conditions.", "They will cause traffic to be detoured.", "By sending an e-mail to a city official", "He supervised a group of 10 workers on a project.", "It may do some roadwork on Rosedale Avenue for two weeks."]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Are the countertops in your home or workplace worn or outdated? Let Carlson Counters give your",
+      "TO: Roger Carlson <rogcarl@carlsoncounters.com>"
+    ],
+    "keys": ["It accepts visit requests through multiple channels.", "general", "The date of a delivery", "$190 per square meter", "Looked through an informational leaflet"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "The Regency Scotia School of Design Hosts Historic Royal Costume Display",
+      "To: Larry Dent <larden@terrington.edu.uk>",
+      "PAID IN FULL (cash)"
+    ],
+    "keys": ["It is open to the public on weekends.", "So that she can obtain a discount on admission fees", "£4.00 per person", "Viewed ancient accessories", "Avoid taking pictures"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "AUCKLAND RESIDENTS CAN NOW SAVE MONEY WITH WHEEL-PALS!",
+      "USER REVIEW: Wheel-Pals Carpooling Application",
+      "To: Jason Diaz <jdiaz@vastpost.co.au>"
+    ],
+    "keys": ["To publicize availability of a software application", "Local residents are unfamiliar with a program.", "He pays six dollars per month for his subscription.", "In Auckland", "make"]
+  },
+  {
+    "name": "TEST 4",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "http://www.corianderfinedining.com/services",
+      "TO Cecilia Shiraz <ceshiraz@corianderfinedining.com>",
+      "Spartan Tires Joins Forces with Maha-Rubber"
+    ],
+    "keys": ["It offers free delivery for any order within city limits.", "The price for catering a dinner", "Borrowing plates and cutlery", "retailing", "Visitors from Maha-Rubber"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Green Wave Consulting Services",
+    "keys": ["Residences are one source of them.", "By arranging a meeting with a consultant"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Marge Bledsoe 11:05 a.m.",
+    "keys": ["A real estate agent", "She likes the proposal that Mr. Clark has made."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: Bob Fletcher <bfletch88@speedmail.com>",
+    "keys": ["To announce the cancellation of a trip", "He will be given superior accommodations."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "SAFETY INSTRUCTIONS",
+    "keys": ["On a food product package", "Defrosting meat in certain temperatures"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Stretch Makes Plans to Expand",
+    "keys": ["To discuss a company’s plans for growth", "Fitness enthusiasts", "[2]"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "NOTICE: Fashion-It Employment Opportunities",
+    "keys": ["It is recruiting employees for several branches.", "similar", "Applicants who have been selected will be notified."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: Jason Minkovski <admin@hepfordrealestate.com>",
+    "keys": ["To request that he make arrangements for a trip", "On June 22", "The availability of a regional manager for a visit"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Tom Estrada 18:42",
+    "keys": ["Gaining access to a service", "It provides limited access to movie channels.", "She will pay a higher monthly fee.", "He does not require some information."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Satisfy your Craving for Sweets",
+    "keys": ["They were promoted in a magazine article.", "Allows them to taste products for free", "By ordering during a specific period", "[2]"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Everything Video Opens Store",
+    "keys": ["An expansion of a retail chain", "Videotaped television series", "It has a Web site where customers can rent games and videos.", "change"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Cyprus Software",
+      "TO: Amos Polson <ampol@digimail.com>"
+    ],
+    "keys": ["To request installation assistance", "Visiting a branch office", "A repair program to assist with installation is available there.", "His operating system is not compatible with the software.", "It offers on-site service visits via online request."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Swimming lesson schedule",
+      "To: Stan Macaulay <s.macaulay@cornwoodhoa.org>"
+    ],
+    "keys": ["It has arranged several summer activities", "They may sometimes take place at an outdoor pool.", "She joined a swim team in the past.", "Ty Warren", "Information about a payment method"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "You are cordially invited to the opening night of",
+      "TO Lena Reid <lenareid@genericamail.com>",
+      "Prima Ballerina: Sofia Pinsky"
+    ],
+    "keys": ["It includes a reception with dancers at 8:00 P.M.", "It is situated near a performance venue.", "Met with two lead dancers from a show", "She will see Ms. Pinsky perform the role of Princess Daffodil.", "In St. Petersburg"]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Dynamic Performance",
+      "www.uspeak.com",
+      "Dynamic Performance"
+    ],
+    "keys": ["New and experienced actors", "Floyd Mink receives the applications to register for them.", "$3,495", "He gave Dynamic Performance the highest possible rating.", "She will be taking a course in Charleston."]
+  },
+  {
+    "name": "TEST 5",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "FOR SALE: Kitchen Appliances!",
+      "TO Lance Volstead <lancev@postaway.com>",
+      "TO Laurie Henner <lauriehen@mostmail.com>"
+    ],
+    "keys": ["She is willing to consider lower prices than listed.", "One and a half years ago", "A product’s exact size", "Get a friend to help move an appliance", "He will give Ms. Henner $1,300 in cash."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "SOFTWARE CLASSES AT BRAMBLE LIBRARY",
+    "keys": ["To publicize a course at an establishment", "Making effective presentations"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Dean Strivers [10:31 a.m.]",
+    "keys": ["She is capable of managing a discussion alone.", "Some business documents"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Harwood Services",
+    "keys": ["A catering company", "It included more than one intermission."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "MEMORANDUM",
+    "keys": ["An executive change for a company division", "Formed stronger international partnerships", "Corporate advisory services"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Art Council to Host Summer Street Festival",
+    "keys": ["It organizes a community festival.", "A group will play some music during a celebration."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Daily schedule for: Melissa Traynor",
+    "keys": ["She is responsible for checking articles prior to publication.", "Have a work-lunch with Sarah", "To set up a meeting"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "TO: Fatima Sukarno <sukfat@balinesiaindustries.com>",
+    "keys": ["A factory representative", "It follows strict production guidelines.", "[1]"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Helen Gatineau [3:35]",
+    "keys": ["Adjustments for a change of operations", "Relocate to a different office", "Shipping", "She agrees that some workers will need to attend a class."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Starting Up",
+    "keys": ["It is about the career of an entrepreneur.", "It expanded globally after opening in Seattle.", "She experienced success in retailing shoes.", "[2]"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "A New Hotspot for Business Travel",
+    "keys": ["In a travel magazine", "It hosts many professional meetings.", "dominated", "Taking a train to a mountain area"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Sunfield Limousines",
+      "TO: Henry Karrington <h_karrington@sunfieldlimo.com>"
+    ],
+    "keys": ["Different types of vehicles are available to clients.", "A program for mobile devices", "On a Web site", "The Sunfield Limousines company sent a driver to the incorrect location.", "He will not use Sunfield for the return trip."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "NOTICE: Upcoming maintenance",
+      "May 8"
+    ],
+    "keys": ["A financial institution’s clients", "It will not affect the operation of automated teller machines.", "An information technology company", "It has an online retailer as a client.", "Meet with Mr. Black sometime before May 22"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Segovia Paints",
+      "https://www.segoviapaints.com/feedback/form",
+      "Do not patronize this store!"
+    ],
+    "keys": ["Some of them are on sale for a limited time.", "It requires a minimum purchase for a discount.", "Densen metallic paint", "reply", "She had to visit a store in Conway."]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Desmond-Hilbert Community College",
+      "Course Schedule for Fall Term August 24 to December 21",
+      "To: Joey Partido <joeypartido@swiftmail.com>"
+    ],
+    "keys": ["Professional skills training", "choice", "Ted Angelotti", "He is currently working for a company.", "Basic Nursing"]
+  },
+  {
+    "name": "TEST 6",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Lakeshore Recreational Complex",
+      "Lakeshore Recreational Complex",
+      "Markovich Insurance"
+    ],
+    "keys": ["A dining area", "The venue’s policies on parking", "It must settle all rental charges by August 29.", "prepared", "Zone 1"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "WALTERS MEMORIAL AIRPORT",
+    "keys": ["It may not be used for a period of time.", "A ride to a terminal entrance"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Riya Shankar [9:10 A.M.]",
+    "keys": ["He is sure that a Web page is functioning properly.", "Viewing pictures of some goods"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Tidy Up Time!",
+    "keys": ["It provides discounts for regular services.", "Cleaning garments"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Using the RoadRunner Sedan 12’s dashboard has never been easier. As with last year’s model,",
+    "keys": ["Give driving directions", "It requires the use of a cable.", "[2]"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "International Interpreter Network",
+    "keys": ["To provide a description of a business", "Some of them can translate spoken and written communications.", "By gathering assessments from clients", "[3]"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Restructuring in Preparation for Farnsworth Capital Bank",
+    "keys": ["A consolidation of two firms", "It is not expected to earn more money right away.", "It will have been completed before the new year."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "John Mallet [3:45 P.M.]",
+    "keys": ["It is located near Go-C Tech.", "She does not want to attend an event.", "It is preparing for an expansion.", "Peter Mercer"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "The Lake Point Small Business Association (LPSBA)",
+    "keys": ["A brief intermission", "She teaches courses at a university.", "Avoid causing noise disturbances"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "MEMO",
+    "keys": ["A need to produce more goods than usual", "Take two options into consideration", "discharge", "Short-term staff will be taken on."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "http://www.doorstepdelectable.com/home",
+    "keys": ["Every week", "They can be paid for after delivery."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Tribcott Manor House",
+      "TO: <queries@tribcottmanorhouse.co.uk>"
+    ],
+    "keys": ["Guided tours are available upon request.", "To make arrangements for a special occasion", "The Devonshire Room", "He works with Ms. Carter.", "judge"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "www.BizzPro.com/BizzSec/update",
+      "Reviewer: Johnny Nestor"
+    ],
+    "keys": ["To notify customers of a product improvement", "Tasks are processed faster than in earlier versions.", "operate", "It took more than half an hour.", "He got a new program version free of charge."]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "MUSICAL RECORDINGS BY: SHAWNA KRALL",
+      "http://www.musictalkmelissa.com",
+      "TO: Melissa Oliver <Moliver@mustalkmelissa.com>"
+    ],
+    "keys": ["She collaborated with the same composer on all her albums.", "The Temptation", "It contains a song ranked third on a global chart.", "Work on an upcoming program", "On August 10"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Subscribe to News Incorporated!",
+      "News Incorporated",
+      "epicenter"
+    ],
+    "keys": ["Award-winning writers", "By signing up for an online magazine", "To report her inability to access content", "She will receive online news content for two months.", "$15"]
+  },
+  {
+    "name": "TEST 7",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "To: Gene Lipton <genelipton@beetleadagency.com>",
+      "TO: Noah Pierce <npierce@hiproductionstudios.com>",
+      "Invoice Date: April 12"
+    ],
+    "keys": ["Use an updated version of a script", "He agreed to film a commercial on Friday.", "event", "Beetle Advertising Agency was charged $600 for his services.", "It is located in the same city as Hinterland Production Studios."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "ARGENTA SCIENCE LABORATORIES",
+    "keys": ["To request that staff monitor their water consumption", "Restricted access to an amenity"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Notice of New Location",
+    "keys": ["Close its establishment for relocation", "It may employ more personnel than previously."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Sandra Fuller [2:23]",
+    "keys": ["She expected Mr. Cavanaugh to be aware of a decision.", "It operates retail outlets in different countries."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: Kay Fine <kay.fine@beebonnethall.com>",
+    "keys": ["An executive will not be available to come.", "Provide a list of drinks"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Important Information Regarding the Flextone 900",
+    "keys": ["A workout machine", "It requires some maintenance.", "Adjusting the settings for children"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Blake Dunlap 10:28 A.M.",
+    "keys": ["A retailer of tires", "Staff may not want to move away from their current homes.", "She thinks a staff member should take on a new responsibility.", "Supply a list of open positions"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Clean Genie",
+    "keys": ["It makes some of its own cleaning products.", "It has to comply with cleanliness standards.", "A dining facility manager"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: Edward Morton <e.morton@repost.com>",
+    "keys": ["A professional writer", "He has traveled to Mexico City before.", "[1]"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Sonorum Brings Vixo Mob One Step Closer to Reality",
+    "keys": ["It has yet to be released to the public.", "It has a substantial user base.", "Almost half its users have signed up for a service.", "[2]"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Open Waters Cruises Cancellation Policies",
+    "keys": ["To describe booking modification procedures", "instituted", "Additional charges may be imposed by travel agencies.", "Contact information"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "SAN FRANCISCO CUSTOM T-SHIRTS",
+      "SAN FRANCISCO CUSTOM T-SHIRTS ORDER FORM"
+    ],
+    "keys": ["By placing a bulk order", "He will pay an extra fee for his order.", "produce", "They will be paid for by a credit card.", "Call an establishment’s number"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "To: Martha Cale <mcale@speedmail.com>",
+      "To: Mark Summers <msummers@speedmail.com>"
+    ],
+    "keys": ["It has modern characteristics.", "Images of his belongings", "It will not fit well in the music room.", "A home interior decorator", "Show some material samples to Mr. Summers in person"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Dayton Bank",
+      "www.pittmantraining.com/registration",
+      "To: Pittman Training <inquiries@pittmantraining.com>"
+    ],
+    "keys": ["All of them take place in the afternoon.", "Its confirmation may take more than a day.", "He has taken the Effective Teller Operations course before.", "To ask about enrolling another student", "It was mailed to an office on South Emerald Avenue."]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Vera Advertising",
+      "Vera Advertising Annual Staff Retreat",
+      "To: Joseph Tran <j.tran@veraadvertising.com>"
+    ],
+    "keys": ["She will not participate in horseback riding.", "distributed", "A guided leisure activity", "Furnishing an annex with tables and chairs", "Have breakfast at another location"]
+  },
+  {
+    "name": "TEST 8",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Coming Soon ... Duty-Free Shopping at Botwell Department Store",
+      "BOTWELL DEPARTMENT STORE",
+      "Botwell Department Store Receipt"
+    ],
+    "keys": ["It is opening a branch at an airport terminal.", "To provide information about current policies", "A lipstick", "She is eligible to receive a voucher for a purchase.", "enclosed"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "You are Invited",
+    "keys": ["A grand opening", "It sells ingredients from different regions."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Renfrew Gymnasium: For all Members",
+    "keys": ["To inform members of guidelines concerning belongings", "Visit the facility’s front desk", "[3]"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Colin McKay [8:45 A.M.]",
+    "keys": ["She is unable to switch times.", "Rearrange an appointment"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "To: Meredith Patton <meredithpatton@sqmail.com>",
+    "keys": ["A selection is unavailable now.", "Returning a defective product"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Production: Fire Across the Sand",
+    "keys": ["Auditioning main actors", "At 2:00 P.M."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Gordon Institute Publishes Study on Americans’ Eating and Exercise Habits",
+    "keys": ["It has produced at least three studies.", "Running at a slow pace", "They are making better choices about their health.", "[1]"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Super Ticket Exchange",
+    "keys": ["It offers refunds for a limited amount of time.", "October 3", "Fill in an online form with some details"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Wembley Hotel, Chicago",
+    "keys": ["It charges a fee to use the business center.", "A malfunctioning device", "He recommended the hotel to a coworker."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "After a Long Absence, Thierry Martin is Back!",
+    "keys": ["It ranked highly on some charts for a period of time.", "He has not performed in public for three years.", "Album release information", "By putting out a song in advance"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Andrew Walker [4:45]",
+    "keys": ["A company is having trouble finding qualified personnel.", "It recently stopped running a job advertisement.", "She does not fully agree with a colleague’s proposal.", "Compile a list of people to invite"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "New Developments in Ancient History",
+      "To: Organizational Team <org@ancienthistory.edu.au>"
+    ],
+    "keys": ["An academic gathering regarding history", "Michael Jones", "It is hosting more than one event on July 25.", "She is taking transit that arrives at a later time.", "In the Hampton Conference Room"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Showing the Way Forward for Cyclist",
+      "To: Melissa Hawk <techsupport@twowheels.com>"
+    ],
+    "keys": ["A new navigation program", "A bicycling group", "Relocated for work", "She paid for a one-year subscription to the application.", "It operates at a fast speed."]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "ADVERTISE IN THE SHELTON MEDIA COMMUNITY NEWSLETTER",
+      "SHELTON MEDIA",
+      "To: Charles Walker <c.walker@lawlerscapes.com>"
+    ],
+    "keys": ["It prints one newsletter issue weekly.", "18", "Provide feedback on services", "It has more business during the spring.", "$165"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "BORDERLAND TOURS",
+      "BORDERLAND TOURS",
+      "A Once-in-a-Lifetime Journey!"
+    ],
+    "keys": ["It is offered by Borderland Tours year-round.", "Transmit a partial payment", "He is in a healthy state of physical fitness.", "The lack of variety of meal options", "Atar"]
+  },
+  {
+    "name": "TEST 9",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Autumn Leaf to Open Second Location in Buenos Aires",
+      "April 9",
+      "TO: Angelo Suarez <angsuar@autumnleafhotels.com>"
+    ],
+    "keys": ["To satisfy a need for extended stays", "It could open later than August.", "It prompted readers to contact Autumn Leaf.", "He visited Monserrat sometime in March.", "finalized"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Received June 14, 1:00 p.m.",
+    "keys": ["To encourage shopping at an online store", "She signed up as a customer on a Web site."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Notice to All Library Users",
+    "keys": ["To announce a change of location for a facility", "The closest public library to it is in Coach Hill."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "March 3",
+    "keys": ["To apply for a technical position", "It produces products for animals."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "http://www.cornucopiaindustries.com/companyoverview",
+    "keys": ["It is known for providing excellent customer service.", "View information on job vacancies", "To get involved in other fields within the industry", "[3]"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "The Granriver Hotel",
+    "keys": ["The accessibility of the hotel", "Carried luggage to his room by himself", "The air conditioning had been left running."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Steam Railway Jamboree — Friday, May 2",
+    "keys": ["To announce an upcoming regional event", "It only operates on a special occasion.", "Enjoy refreshments at a train’s final destination"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Kate Hendrickson [5:01 P.m.",
+    "keys": ["She was not aware of a schedule alteration.", "On December 16"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "The Watertown Recreation Committee invites you to join",
+    "keys": ["Use of a shuttle", "They will each receive a complimentary item.", "Group organizers"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "There May be Hope for Small Regional Retailers After All!",
+    "keys": ["A property development project", "It has transformed some vacant structures into retail facilities.", "It will be rented by the city government.", "[4]"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": "Alison Cambie 4:12 p.m.",
+    "keys": ["A construction firm", "He has some time tomorrow to work at the booth.", "Leave some admission passes at an office", "It takes place once a year."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "To: Janice Vespino <jvesp@farlington.net>",
+      "To: Mike Duff <mduff@farlington.net>"
+    ],
+    "keys": ["To check some information regarding new staff", "They will both work for Ms. Vespino.", "instructed", "She wants Mr. Martinez to have access to clients’ e-mails.", "They were sometimes inaccessible using a particular Web program."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "New Peckham Gift Store Aims For Quality Above All",
+      "To: Stephanie Blanc <shop@londongifts.co.uk>"
+    ],
+    "keys": ["It opened for business a few weeks ago.", "They are intended to have a higher quality than most souvenirs.", "In Southampton", "Some of her items have a British theme.", "Bring selections of merchandise to London"]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "To: Rica Foust <ricafoust@genmail.com>",
+      "Seabird Ocean Liners",
+      "Planet Voyage September Issue"
+    ],
+    "keys": ["To assign an article for a future publication", "August 7", "It accepts trip bookings online.", "superb", "Her room was equipped with a television."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Today only! Our special offer will expire in [O]days, (1 7/hours, and [11|minutes.",
+      "Order Form service@briltechware.com",
+      "To: service@briltechware.com"
+    ],
+    "keys": ["It can be assembled manually by the user.", "Place an order within specific amount of time", "He requested expedited delivery.", "To inquire about changing an order", "She is interested in the Flash-805’s patented feature."]
+  },
+  {
+    "name": "TEST 10",
+    "sub-cat": "3",
+    "cat": "HACKER",
+    "fl": [
+      "Enter O-Deli’s “Name Our Sandwich” Competition and Win $1,000!",
+      "O-Deli’s “Name Our Sandwich” Competition: Application form",
+      "FROM: O-Deli’s (555-2737)"
+    ],
+    "keys": ["A naming contest", "It operates multiple locations within a state.", "A coupon for a complimentary drink", "He agreed to attend an event at 59th Street on February 28.", "A technical concern has occurred at a venue."]
+  }
+]

@@ -84,7 +84,7 @@
     align-items: center;
     justify-content: center;
     width: max-content;
-    max-width: calc(100% - 120px);
+    max-width: calc(100% - 196px);
     margin: 0;
     transform: translateX(-50%);
     font-size: 15px;
@@ -112,10 +112,8 @@
     align-items: center;
     justify-content: center;
     padding: 6px 9px;
-    border-radius: 4px;
+    border-radius: 0 4px 4px 0;
   }
-  body.reading-view #find { border-radius: 0 4px 4px 0; }
-  body.reading-view #title { max-width: calc(100% - 196px); }
   #searchbar { padding: 0 2px 8px; }
   #q {
     display: block;
@@ -412,8 +410,7 @@
 
   @media (max-width: 420px) {
     .sorts button { padding: 6px 7px; }
-    #title { max-width: calc(100% - 112px); }
-    body.reading-view #title { max-width: calc(100% - 168px); }
+    #title { max-width: calc(100% - 168px); }
   }
   @media (min-width: 700px) {
     .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -476,8 +473,8 @@
     </button>
     <h1 id="title"></h1>
     <div class="sorts">
-      <button type="button" id="az" class="on" hidden>A–Z</button>
-      <button type="button" id="za" hidden>Z–A</button>
+      <button type="button" id="az" class="on">A–Z</button>
+      <button type="button" id="za">Z–A</button>
       <button type="button" id="find" aria-label="Search" aria-expanded="false">
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
           <circle cx="10.5" cy="10.5" r="6.25" fill="none" stroke="currentColor" stroke-width="2"></circle>
@@ -602,18 +599,137 @@ function namesIn(html, prefix) {
   return names;
 }
 
+const githubDirs = new Map();
+
+function githubOwner() {
+  const host = location.hostname.toLowerCase();
+  const suffix = ".github.io";
+  if (!host.endsWith(suffix) || host.length <= suffix.length) return "";
+  return host.slice(0, -suffix.length);
+}
+
+function githubContents(owner, repo, path, ref) {
+  const key = owner + "\n" + repo + "\n" + path + "\n" + ref;
+  if (!githubDirs.has(key)) {
+    let url = "https://api.github.com/repos/" + encodeURIComponent(owner) + "/" + encodeURIComponent(repo) + "/contents";
+    if (path) url += "/" + path.split("/").filter(Boolean).map(encodeURIComponent).join("/");
+    if (ref) url += "?ref=" + encodeURIComponent(ref);
+    githubDirs.set(key, fetch(url, {
+      headers: { Accept: "application/vnd.github+json" },
+      cache: "no-store"
+    }).then(async (res) => {
+      if (!res.ok) return null;
+      const data = await res.json();
+      return Array.isArray(data) ? data : null;
+    }).catch(() => null));
+  }
+  return githubDirs.get(key);
+}
+
+function sameSite(htmlUrl) {
+  try {
+    const published = new URL(htmlUrl);
+    if (!published.pathname.endsWith("/")) published.pathname += "/";
+    const page = new URL("./", location.href);
+    return page.href === published.href || page.href.startsWith(published.href);
+  } catch (e) {
+    return false;
+  }
+}
+
+function linkTarget(filePath, target) {
+  const stack = filePath.split("/").filter(Boolean);
+  stack.pop();
+  for (const part of target.split("/")) {
+    if (part === "..") stack.pop();
+    else if (part && part !== ".") stack.push(part);
+  }
+  return stack.join("/");
+}
+
+function pagesSource(owner, repo) {
+  const key = "pages\n" + owner + "\n" + repo;
+  if (!githubDirs.has(key)) {
+    githubDirs.set(key, fetch("https://api.github.com/repos/" + encodeURIComponent(owner) + "/" + encodeURIComponent(repo) + "/pages", {
+      headers: { Accept: "application/vnd.github+json" },
+      cache: "no-store"
+    }).then(async (res) => {
+      if (!res.ok) return null;
+      const data = await res.json();
+      const source = data && data.source;
+      if (!source) return null;
+      return {
+        branch: source.branch || "",
+        path: source.path === "/docs" ? "docs" : "",
+        url: data.html_url || ""
+      };
+    }).catch(() => null));
+  }
+  return githubDirs.get(key);
+}
+
+async function filesInTree(owner, repo, rootPath, ref, prefix, base) {
+  const root = await githubContents(owner, repo, rootPath, ref);
+  if (!root || !root.some((item) => item.type === "file" && item.name === "index.html")) return [];
+  const found = new Map();
+  const add = (name, path) => {
+    if (!path || path.split("/").includes("..")) return;
+    if (!name.startsWith(prefix) || !name.toLowerCase().endsWith(".json")) return;
+    if (!found.has(name)) found.set(name, new URL(path, base).href);
+  };
+  for (const item of root) {
+    if (item.type === "file") add(item.name, item.name);
+  }
+  for (const folder of ["json", "data"]) {
+    const sub = await githubContents(owner, repo, [rootPath, folder].filter(Boolean).join("/"), ref);
+    if (!sub) continue;
+    for (const item of sub) {
+      if (item.type === "file") add(item.name, folder + "/" + item.name);
+      else if (item.type === "symlink" && item.target) add(item.name, linkTarget(folder + "/" + item.name, item.target));
+    }
+  }
+  return [...found.entries()];
+}
+
+async function filesFromGithub(prefix) {
+  const owner = githubOwner();
+  if (!owner) return [];
+  const parts = location.pathname.split("/").filter(Boolean);
+  if (parts[parts.length - 1] === "index.html") parts.pop();
+  const tries = [{ repo: owner + ".github.io", dir: parts.join("/") }];
+  if (parts.length) tries.unshift({ repo: parts[0], dir: parts.slice(1).join("/") });
+  const base = new URL("./", location.href);
+  for (const attempt of tries) {
+    const source = await pagesSource(owner, attempt.repo);
+    if (source && !sameSite(source.url)) continue;
+    const lookups = source
+      ? [[source.branch, source.path]]
+      : [["", ""], ["", "docs"], ["gh-pages", ""], ["gh-pages", "docs"]];
+    for (const [ref, publish] of lookups) {
+      const files = await filesInTree(owner, attempt.repo, [attempt.dir, publish].filter(Boolean).join("/"), ref, prefix, base);
+      if (files.length) return files;
+    }
+  }
+  return [];
+}
+
 async function loadKind(kind) {
   const prefix = prefixes[kind];
-  const dirs = [new URL("./", location.href), new URL("data/", location.href)];
   const found = new Map();
-  for (const dir of dirs) {
-    let res;
-    try { res = await fetch(dir.href, { cache: "no-store" }); }
-    catch (e) { continue; }
-    if (!res.ok) continue;
-    for (const name of namesIn(await res.text(), prefix)) {
-      if (!found.has(name)) found.set(name, new URL(name, dir).href);
+  if (!githubOwner()) {
+    const dirs = [new URL("./", location.href), new URL("data/", location.href)];
+    for (const dir of dirs) {
+      let res;
+      try { res = await fetch(dir.href, { cache: "no-store" }); }
+      catch (e) { continue; }
+      if (!res.ok) continue;
+      for (const name of namesIn(await res.text(), prefix)) {
+        if (!found.has(name)) found.set(name, new URL(name, dir).href);
+      }
     }
+  }
+  if (!found.size) {
+    for (const [name, url] of await filesFromGithub(prefix)) found.set(name, url);
   }
   const files = [...found.entries()].sort((a, b) =>
     a[0].localeCompare(b[0], "en", { numeric: true, sensitivity: "base" })
@@ -715,7 +831,7 @@ function makeRow(label, branch, isOpen, selected) {
 
 function renderTree() {
   tree.replaceChildren();
-  tree.append(sectionNode("listening", "Listening"), sectionNode("reading", "Reading"));
+  tree.append(sectionNode("listening", "Listening"), sectionNode("reading", "Reading (Part 7)"));
 }
 
 function sectionNode(kind, label) {
@@ -867,15 +983,7 @@ function svgNode(item) {
   return node;
 }
 
-function syncSort() {
-  const show = query.trim() !== "" || !!(selection && selection.kind === "reading");
-  document.body.classList.toggle("reading-view", show);
-  az.hidden = !show;
-  za.hidden = !show;
-}
-
 function renderMain() {
-  syncSort();
   syncHeaderHeight();
   applyTitle();
   const q = query.trim().toLocaleLowerCase("en");
