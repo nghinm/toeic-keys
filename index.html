@@ -55,7 +55,7 @@
   }
   .bar {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
     min-height: 48px;
     position: relative;
@@ -69,6 +69,7 @@
     justify-content: center;
     width: 44px;
     height: 40px;
+    margin-top: 4px;
     padding: 0;
     border: 1px solid #777;
     border-radius: 4px;
@@ -76,17 +77,10 @@
     color: #111;
   }
   #title {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: max-content;
-    max-width: calc(100% - 196px);
+    flex: 1 1 auto;
+    min-width: 0;
     margin: 0;
-    transform: translateX(-50%);
+    padding: 14px 0;
     font-size: 15px;
     font-weight: 650;
     line-height: 1.25;
@@ -94,7 +88,7 @@
     pointer-events: none;
     overflow-wrap: anywhere;
   }
-  .sorts { position: relative; z-index: 1; display: flex; flex-shrink: 0; margin-left: auto; }
+  .sorts { position: relative; z-index: 1; display: flex; flex-shrink: 0; margin-top: 6px; margin-left: auto; }
   .sorts button {
     font-size: 14px;
     padding: 6px 10px;
@@ -410,7 +404,6 @@
 
   @media (max-width: 420px) {
     .sorts button { padding: 6px 7px; }
-    #title { max-width: calc(100% - 168px); }
   }
   @media (min-width: 700px) {
     .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -484,7 +477,7 @@
     </div>
   </div>
   <div id="searchbar" hidden>
-    <input id="q" type="search" placeholder="Search" autocomplete="off" enterkeyhint="search">
+    <input id="q" type="search" placeholder="Search Reading" autocomplete="off" enterkeyhint="search">
   </div>
 </header>
 <button type="button" id="scrim" hidden aria-label="Close menu"></button>
@@ -501,6 +494,7 @@
   <footer>
     <div>Author: Nguyễn Minh Nghị</div>
     <div>Contact: nmnghi95@gmail.com</div>
+    <div id="updated" hidden></div>
   </footer>
 </aside>
 <main id="main"></main>
@@ -540,8 +534,8 @@ function titlesOf(item) {
 function pathText(item, level) {
   if (level === "name") return "";
   if (level === "sub") return item.name;
-  if (level === "cat") return item["sub-cat"] + " - " + item.name;
-  return item.cat + " - " + item["sub-cat"] + " - " + item.name;
+  if (level === "cat") return item["sub-cat"] + " \u00b7 " + item.name;
+  return item.cat + " \u00b7 " + item["sub-cat"] + " \u00b7 " + item.name;
 }
 
 function itemLabel(row, level) {
@@ -564,12 +558,12 @@ function selectionTitle() {
   const detail = answerItem();
   if (detail) {
     parts.push(detail.cat, detail["sub-cat"], detail.name);
-    return parts.join(" - ");
+    return parts.join(" \u00b7 ");
   }
   if (selection.cat) parts.push(selection.cat);
   if (selection.sub) parts.push(selection.sub);
   if (selection.name) parts.push(selection.name);
-  return parts.join(" - ");
+  return parts.join(" \u00b7 ");
 }
 
 function applyTitle() {
@@ -691,22 +685,68 @@ async function filesInTree(owner, repo, rootPath, ref, prefix, base) {
   return [...found.entries()];
 }
 
-async function filesFromGithub(prefix) {
+function githubAttempts() {
   const owner = githubOwner();
   if (!owner) return [];
   const parts = location.pathname.split("/").filter(Boolean);
   if (parts[parts.length - 1] === "index.html") parts.pop();
-  const tries = [{ repo: owner + ".github.io", dir: parts.join("/") }];
-  if (parts.length) tries.unshift({ repo: parts[0], dir: parts.slice(1).join("/") });
+  const tries = [{ owner: owner, repo: owner + ".github.io", dir: parts.join("/") }];
+  if (parts.length) tries.unshift({ owner: owner, repo: parts[0], dir: parts.slice(1).join("/") });
+  return tries;
+}
+
+function formatUpdated(iso) {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  return dd + "-" + mm + "-" + date.getFullYear();
+}
+
+async function latestCommitIso(owner, repo, branch) {
+  let url = "https://api.github.com/repos/" + encodeURIComponent(owner) + "/" + encodeURIComponent(repo) + "/commits?per_page=1";
+  if (branch) url += "&sha=" + encodeURIComponent(branch);
+  try {
+    const res = await fetch(url, {
+      headers: { Accept: "application/vnd.github+json" },
+      cache: "no-store"
+    });
+    if (!res.ok) return "";
+    const data = await res.json();
+    const commit = data && data[0] && data[0].commit;
+    if (!commit) return "";
+    return (commit.committer && commit.committer.date) || (commit.author && commit.author.date) || "";
+  } catch (e) {
+    return "";
+  }
+}
+
+async function showUpdated() {
+  const line = document.getElementById("updated");
+  if (!line) return;
+  for (const attempt of githubAttempts()) {
+    const source = await pagesSource(attempt.owner, attempt.repo);
+    if (!source || !sameSite(source.url)) continue;
+    const day = formatUpdated(await latestCommitIso(attempt.owner, attempt.repo, source.branch));
+    if (!day) continue;
+    line.textContent = "Latest Updated: " + day;
+    line.hidden = false;
+    return;
+  }
+}
+
+async function filesFromGithub(prefix) {
+  const attempts = githubAttempts();
+  if (!attempts.length) return [];
   const base = new URL("./", location.href);
-  for (const attempt of tries) {
-    const source = await pagesSource(owner, attempt.repo);
+  for (const attempt of attempts) {
+    const source = await pagesSource(attempt.owner, attempt.repo);
     if (source && !sameSite(source.url)) continue;
     const lookups = source
       ? [[source.branch, source.path]]
       : [["", ""], ["", "docs"], ["gh-pages", ""], ["gh-pages", "docs"]];
     for (const [ref, publish] of lookups) {
-      const files = await filesInTree(owner, attempt.repo, [attempt.dir, publish].filter(Boolean).join("/"), ref, prefix, base);
+      const files = await filesInTree(attempt.owner, attempt.repo, [attempt.dir, publish].filter(Boolean).join("/"), ref, prefix, base);
       if (files.length) return files;
     }
   }
@@ -1253,6 +1293,7 @@ qInput.addEventListener("input", () => {
 
 renderTree();
 renderMain();
+showUpdated();
 </script>
 </body>
 </html>
