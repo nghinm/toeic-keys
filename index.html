@@ -620,17 +620,6 @@ function githubContents(owner, repo, path, ref) {
   return githubDirs.get(key);
 }
 
-function sameSite(htmlUrl) {
-  try {
-    const published = new URL(htmlUrl);
-    if (!published.pathname.endsWith("/")) published.pathname += "/";
-    const page = new URL("./", location.href);
-    return page.href === published.href || page.href.startsWith(published.href);
-  } catch (e) {
-    return false;
-  }
-}
-
 function linkTarget(filePath, target) {
   const stack = filePath.split("/").filter(Boolean);
   stack.pop();
@@ -639,27 +628,6 @@ function linkTarget(filePath, target) {
     else if (part && part !== ".") stack.push(part);
   }
   return stack.join("/");
-}
-
-function pagesSource(owner, repo) {
-  const key = "pages\n" + owner + "\n" + repo;
-  if (!githubDirs.has(key)) {
-    githubDirs.set(key, fetch("https://api.github.com/repos/" + encodeURIComponent(owner) + "/" + encodeURIComponent(repo) + "/pages", {
-      headers: { Accept: "application/vnd.github+json" },
-      cache: "no-store"
-    }).then(async (res) => {
-      if (!res.ok) return null;
-      const data = await res.json();
-      const source = data && data.source;
-      if (!source) return null;
-      return {
-        branch: source.branch || "",
-        path: source.path === "/docs" ? "docs" : "",
-        url: data.html_url || ""
-      };
-    }).catch(() => null));
-  }
-  return githubDirs.get(key);
 }
 
 async function filesInTree(owner, repo, rootPath, ref, prefix, base) {
@@ -674,12 +642,13 @@ async function filesInTree(owner, repo, rootPath, ref, prefix, base) {
   for (const item of root) {
     if (item.type === "file") add(item.name, item.name);
   }
-  for (const folder of ["json", "data"]) {
-    const sub = await githubContents(owner, repo, [rootPath, folder].filter(Boolean).join("/"), ref);
+  for (const item of root) {
+    if (item.type !== "dir" || (item.name !== "json" && item.name !== "data")) continue;
+    const sub = await githubContents(owner, repo, [rootPath, item.name].filter(Boolean).join("/"), ref);
     if (!sub) continue;
-    for (const item of sub) {
-      if (item.type === "file") add(item.name, folder + "/" + item.name);
-      else if (item.type === "symlink" && item.target) add(item.name, linkTarget(folder + "/" + item.name, item.target));
+    for (const entry of sub) {
+      if (entry.type === "file") add(entry.name, item.name + "/" + entry.name);
+      else if (entry.type === "symlink" && entry.target) add(entry.name, linkTarget(item.name + "/" + entry.name, entry.target));
     }
   }
   return [...found.entries()];
@@ -725,9 +694,9 @@ async function showUpdated() {
   const line = document.getElementById("updated");
   if (!line) return;
   for (const attempt of githubAttempts()) {
-    const source = await pagesSource(attempt.owner, attempt.repo);
-    if (!source || !sameSite(source.url)) continue;
-    const day = formatUpdated(await latestCommitIso(attempt.owner, attempt.repo, source.branch));
+    const root = await githubContents(attempt.owner, attempt.repo, attempt.dir, "");
+    if (!root || !root.some((item) => item.type === "file" && item.name === "index.html")) continue;
+    const day = formatUpdated(await latestCommitIso(attempt.owner, attempt.repo, ""));
     if (!day) continue;
     line.textContent = "Latest Updated: " + day;
     line.hidden = false;
@@ -740,11 +709,7 @@ async function filesFromGithub(prefix) {
   if (!attempts.length) return [];
   const base = new URL("./", location.href);
   for (const attempt of attempts) {
-    const source = await pagesSource(attempt.owner, attempt.repo);
-    if (source && !sameSite(source.url)) continue;
-    const lookups = source
-      ? [[source.branch, source.path]]
-      : [["", ""], ["", "docs"], ["gh-pages", ""], ["gh-pages", "docs"]];
+    const lookups = [["", ""], ["", "docs"], ["gh-pages", ""], ["gh-pages", "docs"]];
     for (const [ref, publish] of lookups) {
       const files = await filesInTree(attempt.owner, attempt.repo, [attempt.dir, publish].filter(Boolean).join("/"), ref, prefix, base);
       if (files.length) return files;
