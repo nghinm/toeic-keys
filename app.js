@@ -839,7 +839,7 @@ function copyToClipboard(text) {
 const updatedDate = document.getElementById("updatedDate");
 const contributorsList = document.getElementById("contributorsList");
 const pathParts = location.pathname.split("/").filter(Boolean);
-const repoName = pathParts.length >= 2 ? pathParts[0] : "";
+const repoName = pathParts.length >= 1 ? pathParts[0] : "";
 if (repoName) {
   // Fetch contributors
   fetch(`https://api.github.com/repos/nghinm/${repoName}/contributors?per_page=10`)
