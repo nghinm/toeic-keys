@@ -11,6 +11,11 @@ let searchQuery = "";
 let currentDetail = null;
 let drawerOpen = false;
 
+// Filter state for tree navigation
+let filterKind = null; // 'listening' | 'reading' | null
+let filterCat = null;  // category name or null for all
+let filterSubCat = null; // sub-cat name or null for all
+
 // Elements
 const main = document.getElementById("main");
 const tabs = document.getElementById("tabs");
@@ -202,25 +207,43 @@ function renderReadingList(rows) {
       </div>
       <span class="section-count">${sorted.length} passages${searchQuery ? " (filtered)" : ""}</span>
     </div>
+    <div class="reading-search">
+      <div class="search-box" id="searchBox">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search by title or answers…" autocomplete="off" value="${searchQuery}">
+        <button class="search-clear" id="searchClear" style="${searchQuery ? "" : "display:none"}">✕</button>
+      </div>
+    </div>
     <div class="reading-list">
       ${sorted.map(row => {
         const titles = Array.isArray(row.item.fl) ? row.item.fl : [row.item.fl];
         const isOpen = expandedItems.has(row.i);
+        const testLabel = `P${row.item["sub-cat"] || row.item.name}`;
+        const metaInfo = `${row.item.cat || ""} • ${row.item.name || ""}`;
         return `
           <div class="reading-item ${isOpen ? "expanded" : ""}" data-index="${row.i}">
-            <button class="reading-header" onclick="toggleReading(${row.i})">
-              <div class="reading-expand">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-                  <path d="M9 18l6-6-6-6"/>
-                </svg>
+            <div class="reading-main">
+              <button class="reading-header" onclick="toggleReading(${row.i})">
+                <div class="reading-expand">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
+                </div>
+                <div class="reading-title">${titles[0] || "Untitled"}</div>
+              </button>
+              <div class="reading-meta">
+                <span class="reading-badge">${testLabel}</span>
+                <span class="reading-meta-text">${metaInfo}</span>
               </div>
-              <div class="reading-title">${titles[0] || "Untitled"}</div>
-            </button>
+            </div>
             <div class="reading-body">
               ${titles.slice(1).map(t => `<div class="reading-extra">${t}</div>`).join("")}
               <div class="reading-answers" style="margin-top: 12px;">
                 ${(row.item.keys || []).map((k, i) => `
-                  <span class="answer-chip">${i + 1}. ${k}</span>
+                  <div class="answer-chip">${i + 1}. ${k}</div>
                 `).join("")}
               </div>
             </div>
@@ -273,20 +296,43 @@ function render() {
   }
   
   if (currentTab === "listening") {
-    const rows = cache.listening;
-    if (!rows) {
+    let rows = cache.listening || [];
+    
+    // Apply filters
+    if (filterKind === "listening") {
+      if (filterCat) {
+        rows = rows.filter(r => r.item.cat === filterCat);
+        if (filterSubCat) {
+          rows = rows.filter(r => r.item["sub-cat"] === filterSubCat);
+        }
+      }
+    }
+    
+    if (!rows.length) {
       main.innerHTML = renderLoading();
-      ensure("listening").then(render);
+      if (!cache.listening) ensure("listening").then(render);
     } else {
       main.innerHTML = renderListeningCards(rows);
     }
   } else {
-    const rows = cache.reading;
-    if (!rows) {
+    let rows = cache.reading || [];
+    
+    // Apply filters
+    if (filterKind === "reading") {
+      if (filterCat) {
+        rows = rows.filter(r => r.item.cat === filterCat);
+        if (filterSubCat) {
+          rows = rows.filter(r => r.item["sub-cat"] === filterSubCat);
+        }
+      }
+    }
+    
+    if (!rows.length) {
       main.innerHTML = renderLoading();
-      ensure("reading").then(render);
+      if (!cache.reading) ensure("reading").then(render);
     } else {
       main.innerHTML = renderReadingList(rows);
+      attachSearchListeners();
     }
   }
 }
@@ -295,6 +341,11 @@ function updateTabs() {
   document.querySelectorAll(".tab").forEach(tab => {
     tab.classList.toggle("active", tab.dataset.tab === currentTab);
   });
+  
+  // Show/hide search based on current tab
+  if (searchContainer) {
+    searchContainer.hidden = currentTab !== "reading";
+  }
 }
 
 // Actions
@@ -341,60 +392,97 @@ function closeDrawer() {
 }
 
 function renderDrawerNav() {
-  const listeningGroups = groupBy(cache.listening || [], "cat");
-  const readingGroups = groupBy(cache.reading || [], "cat");
+  const listeningData = cache.listening || [];
+  const readingData = cache.reading || [];
+  
+  // Group listening by cat then sub-cat
+  const listeningByCat = groupBy(listeningData, "cat");
+  const readingByCat = groupBy(readingData, "cat");
   
   let html = `
-    <button class="drawer-item listening ${currentTab === "listening" ? "active" : ""}" onclick="selectTab('listening'); closeDrawer();">
-      <div class="icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        </svg>
+    <div class="drawer-tree">
+      <!-- Listening Section -->
+      <div class="tree-folder ${filterKind === 'listening' && !filterCat ? 'open' : ''}" data-type="listening">
+        <button class="tree-folder-header" onclick="toggleTreeFolder(this)">
+          <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          </svg>
+          <span>Listening</span>
+          <span class="tree-count">${listeningData.length}</span>
+        </button>
+        <div class="tree-children">
+          ${listeningByCat.map(g => renderTreeCatGroup('listening', g, listeningData)).join("")}
+        </div>
       </div>
-      All Listening (${cache.listening?.length || 0})
-    </button>
-    <button class="drawer-item reading ${currentTab === "reading" ? "active" : ""}" onclick="selectTab('reading'); closeDrawer();">
-      <div class="icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-        </svg>
+      
+      <!-- Reading Section -->
+      <div class="tree-folder ${filterKind === 'reading' && !filterCat ? 'open' : ''}" data-type="reading">
+        <button class="tree-folder-header" onclick="toggleTreeFolder(this)">
+          <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          <span>Reading</span>
+          <span class="tree-count">${readingData.length}</span>
+        </button>
+        <div class="tree-children">
+          ${readingByCat.map(g => renderTreeCatGroup('reading', g, readingData)).join("")}
+        </div>
       </div>
-      All Reading (${cache.reading?.length || 0})
-    </button>
+    </div>
   `;
-  
-  if (listeningGroups.length) {
-    html += `<div style="padding: 16px 16px 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-3);">Listening by Category</div>`;
-    listeningGroups.forEach(g => {
-      html += `
-        <button class="drawer-item" onclick="filterByCategory('listening', '${g.key}'); closeDrawer();">
-          <div class="icon" style="background: var(--listening-bg); color: var(--listening);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-          </div>
-          ${g.key} (${g.count})
-        </button>
-      `;
-    });
-  }
-  
-  if (readingGroups.length) {
-    html += `<div style="padding: 16px 16px 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-3);">Reading by Category</div>`;
-    readingGroups.forEach(g => {
-      html += `
-        <button class="drawer-item" onclick="filterByCategory('reading', '${g.key}'); closeDrawer();">
-          <div class="icon" style="background: var(--reading-bg); color: var(--reading);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-          </div>
-          ${g.key} (${g.count})
-        </button>
-      `;
-    });
-  }
   
   drawerNav.innerHTML = html;
 }
+
+function renderTreeCatGroup(kind, catGroup, allData) {
+  const catName = catGroup.key;
+  const subCatGroups = groupBySubCat(allData.filter(r => r.item.cat === catName), "sub-cat");
+  const isActive = filterKind === kind && filterCat === catName;
+  
+  return `
+    <div class="tree-folder tree-sub ${isActive ? 'open' : ''}" data-type="${kind}" data-cat="${catName}">
+      <button class="tree-folder-header" onclick="toggleTreeFolder(this)">
+        <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span>${catName}</span>
+        <span class="tree-count">${catGroup.count}</span>
+      </button>
+      <div class="tree-children">
+        ${subCatGroups.map(sg => `
+          <button class="tree-item ${filterKind === kind && filterCat === catName && filterSubCat === sg.key ? 'active' : ''}" 
+                  onclick="setFilter('${kind}', '${catName}', '${sg.key}'); closeDrawer();">
+            <span>${sg.key}</span>
+            <span class="tree-count">${sg.count}</span>
+          </button>
+        `).join("")}
+        <button class="tree-item ${filterKind === kind && filterCat === catName && !filterSubCat ? 'active' : ''}" 
+                onclick="setFilter('${kind}', '${catName}', null); closeDrawer();">
+          <span>All ${catName}</span>
+          <span class="tree-count">${catGroup.count}</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+window.toggleTreeFolder = function(btn) {
+  const folder = btn.closest('.tree-folder');
+  folder.classList.toggle('open');
+};
+
+window.setFilter = function(kind, cat, subCat) {
+  filterKind = kind;
+  filterCat = cat;
+  filterSubCat = subCat || null;
+  currentTab = kind;
+  currentDetail = null;
+  updateTabs();
+  render();
+  updateBreadcrumb();
+};
 
 function groupBy(rows, key) {
   const map = new Map();
@@ -406,43 +494,99 @@ function groupBy(rows, key) {
   return [...map.values()].sort((a, b) => b.count - a.count);
 }
 
+function groupBySubCat(rows, key) {
+  const map = new Map();
+  rows.forEach(r => {
+    const k = r.item[key] || "Other";
+    if (!map.has(k)) map.set(k, { key: k, count: 0 });
+    map.get(k).count++;
+  });
+  return [...map.values()].sort((a, b) => a.key.localeCompare(b.key));
+}
+
 window.selectTab = function(tab) {
+  filterKind = null;
+  filterCat = null;
+  filterSubCat = null;
   currentTab = tab;
   currentDetail = null;
   updateTabs();
   render();
-};
-
-window.filterByCategory = function(kind, cat) {
-  currentTab = kind;
-  currentDetail = null;
-  updateTabs();
-  render();
-  // Scroll to section
-  const el = document.querySelector(".section-title");
-  if (el) el.scrollIntoView({ behavior: "smooth" });
+  updateBreadcrumb();
 };
 
 window.closeDrawer = closeDrawer;
 
-// Search
-searchInput.addEventListener("input", () => {
-  searchQuery = searchInput.value.trim();
-  searchBox.classList.toggle("has-value", searchQuery.length > 0);
-  if (searchQuery && !cache.reading) {
-    ensure("reading").then(render);
-  } else {
-    render();
-  }
-});
+// Breadcrumb
+const breadcrumb = document.getElementById("breadcrumb");
 
-searchClear.addEventListener("click", () => {
-  searchInput.value = "";
-  searchQuery = "";
-  searchBox.classList.remove("has-value");
+function updateBreadcrumb() {
+  if (!breadcrumb) return;
+  
+  if (!filterKind) {
+    breadcrumb.style.display = "none";
+    return;
+  }
+  
+  breadcrumb.style.display = "flex";
+  const kindLabel = filterKind === "listening" ? "Listening" : "Reading";
+  const icon = filterKind === "listening" 
+    ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>`
+    : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`;
+  
+  if (filterSubCat) {
+    breadcrumb.innerHTML = `
+      <button onclick="clearFilter()">${icon} ${kindLabel}</button>
+      <span class="breadcrumb-sep">›</span>
+      <button onclick="setFilter('${filterKind}', '${filterCat}', null)">${filterCat}</button>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">${filterSubCat}</span>
+    `;
+  } else if (filterCat) {
+    breadcrumb.innerHTML = `
+      <button onclick="clearFilter()">${icon} ${kindLabel}</button>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">${filterCat}</span>
+    `;
+  }
+}
+
+window.clearFilter = function() {
+  filterKind = null;
+  filterCat = null;
+  filterSubCat = null;
+  updateBreadcrumb();
   render();
-  searchInput.focus();
-});
+};
+
+// Search - attach after render since elements are dynamic
+function attachSearchListeners() {
+  const si = document.getElementById("searchInput");
+  const sb = document.getElementById("searchBox");
+  const sc = document.getElementById("searchClear");
+  
+  if (!si || !sb || !sc) return;
+  
+  si.addEventListener("input", () => {
+    searchQuery = si.value.trim();
+    sb.classList.toggle("has-value", searchQuery.length > 0);
+    sc.style.display = searchQuery ? "block" : "none";
+    if (searchQuery && !cache.reading) {
+      ensure("reading").then(render);
+    } else {
+      render();
+    }
+  });
+  
+  sc.addEventListener("click", () => {
+    si.value = "";
+    searchQuery = "";
+    sb.classList.remove("has-value");
+    sc.style.display = "none";
+    render();
+    si.focus();
+  });
+}
 
 // Tabs
 tabs.addEventListener("click", e => {
@@ -512,6 +656,14 @@ function updateThemeIcon() {
 }
 
 themeBtn?.addEventListener("click", () => setTheme(!isDark));
+
+// Sort button
+const sortBtn = document.getElementById("sortBtn");
+sortBtn?.addEventListener("click", () => {
+  sortDir *= -1;
+  sortBtn.classList.toggle("active", sortDir === -1);
+  render();
+});
 
 // Set initial theme
 setTheme(isDark);
