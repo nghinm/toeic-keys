@@ -838,10 +838,11 @@ function copyToClipboard(text) {
 // Search bar sticky shadow on scroll
 const updatedDate = document.getElementById("updatedDate");
 const contributorsList = document.getElementById("contributorsList");
-const owner = location.hostname.endsWith(".github.io") ? location.hostname.slice(0, -10) : "";
-if (owner) {
+const pathParts = location.pathname.split("/").filter(Boolean);
+const repoName = pathParts.length >= 2 ? pathParts[0] : "";
+if (repoName) {
   // Fetch contributors
-  fetch(`https://api.github.com/repos/${owner}/${owner}.github.io/contributors?per_page=10`)
+  fetch(`https://api.github.com/repos/nghinm/${repoName}/contributors?per_page=10`)
     .then(r => r.json())
     .then(data => {
       if (Array.isArray(data) && data.length) {
@@ -853,7 +854,7 @@ if (owner) {
     .catch(() => {});
 
   // Fetch last commit
-  fetch(`https://api.github.com/repos/${owner}/${owner}.github.io/commits?per_page=1`)
+  fetch(`https://api.github.com/repos/nghinm/${repoName}/commits?per_page=1`)
     .then(r => r.json())
     .then(data => {
       if (data[0]?.commit?.committer?.date) {
