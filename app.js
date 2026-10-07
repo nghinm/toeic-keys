@@ -843,7 +843,10 @@ const repoName = pathParts.length >= 1 ? pathParts[0] : "";
 if (repoName) {
   // Fetch contributors
   fetch(`https://api.github.com/repos/nghinm/${repoName}/contributors?per_page=10`)
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) throw new Error("API error");
+      return r.json();
+    })
     .then(data => {
       if (Array.isArray(data) && data.length) {
         contributorsList.innerHTML = data.map(c => 
@@ -855,7 +858,10 @@ if (repoName) {
 
   // Fetch last commit
   fetch(`https://api.github.com/repos/nghinm/${repoName}/commits?per_page=1`)
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) throw new Error("API error");
+      return r.json();
+    })
     .then(data => {
       if (data[0]?.commit?.committer?.date) {
         const d = new Date(data[0].commit.committer.date);
