@@ -34,63 +34,26 @@
           <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
         </svg>
       </button>
-      <button class="icon-btn" id="sortBtn" aria-label="Sort">
-        <svg class="sort-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M3 6h18M7 12h10M11 18h2"/>
-        </svg>
+      <button class="sort-btn" id="sortBtn" aria-label="Sort">
+        <span class="sort-btn-text">A-Z</span>
       </button>
     </div>
   </header>
 
-  <nav class="tabs" id="tabs">
-    <button class="tab listening active" data-tab="listening">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <path d="M12 19v4M8 23h8"/>
-      </svg>
-      Listening
-      <span class="badge" id="listeningCount">—</span>
-    </button>
-    <button class="tab reading" data-tab="reading">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-      </svg>
-      Reading
-      <span class="badge" id="readingCount">—</span>
-    </button>
-  </nav>
-
-  <div class="breadcrumb" id="breadcrumb">
-    <!-- Rendered by JS -->
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <!-- Drawer content rendered by JS -->
+    </aside>
+    <div class="app-main">
+      <div class="breadcrumb" id="breadcrumb">
+        <!-- Rendered by JS -->
+      </div>
+      <main class="main" id="main">
+        <!-- Content rendered by JS -->
+      </main>
+    </div>
   </div>
-
-  <main class="main" id="main">
-    <!-- Content rendered by JS -->
-  </main>
 </div>
-
-<!-- Drawer -->
-<div class="drawer-overlay" id="drawerOverlay"></div>
-<aside class="drawer" id="drawer" aria-hidden="true" inert>
-  <div class="drawer-header">
-    <span class="drawer-title">Contents</span>
-    <button class="icon-btn" id="closeDrawer" aria-label="Close">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M6 6l12 12M18 6L6 18"/>
-      </svg>
-    </button>
-  </div>
-  <nav class="drawer-content" id="drawerNav">
-    <!-- Rendered by JS -->
-  </nav>
-  <footer class="drawer-footer">
-    <p><strong>Author:</strong> Nguyễn Minh Nghĩa</p>
-    <p><strong>Contact:</strong> nmnghi95@gmail.com</p>
-    <p id="updatedDate"></p>
-  </footer>
-</aside>
 
 <!-- Scroll to top button -->
 <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">

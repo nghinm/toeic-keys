@@ -9,16 +9,15 @@ let currentTab = "listening";
 let sortDir = 1;
 let searchQuery = "";
 let currentDetail = null;
-let drawerOpen = false;
 
 // Filter state for tree navigation
 let filterKind = null; // 'listening' | 'reading' | null
 let filterCat = null;  // category name or null for all
 let filterSubCat = null; // sub-cat name or null for all
+let filterName = null;  // test name or null for all
 
 // Elements
 const main = document.getElementById("main");
-const tabs = document.getElementById("tabs");
 const searchInput = document.getElementById("searchInput");
 const searchBox = document.getElementById("searchBox");
 const searchContainer = document.getElementById("searchContainer");
@@ -28,12 +27,40 @@ const themeIcon = document.getElementById("themeIcon");
 const scrollTopBtn = document.getElementById("scrollTop");
 const toast = document.getElementById("toast");
 const menuBtn = document.getElementById("menuBtn");
-const drawer = document.getElementById("drawer");
-const drawerOverlay = document.getElementById("drawerOverlay");
-const drawerNav = document.getElementById("drawerNav");
-const closeDrawerBtn = document.getElementById("closeDrawer");
+const sidebar = document.getElementById("sidebar");
 const listeningCount = document.getElementById("listeningCount");
 const readingCount = document.getElementById("readingCount");
+
+// Mobile sidebar state
+let sidebarOpen = false;
+const isMobile = () => window.innerWidth <= 768;
+
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen;
+  sidebar.classList.toggle("open", sidebarOpen);
+  if (sidebarOpen && isMobile()) {
+    // Show overlay on mobile
+    let overlay = document.getElementById("sidebarOverlay");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "sidebarOverlay";
+      overlay.className = "sidebar-overlay";
+      overlay.addEventListener("click", closeSidebar);
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.add("open");
+  } else {
+    const overlay = document.getElementById("sidebarOverlay");
+    if (overlay) overlay.classList.remove("open");
+  }
+}
+
+function closeSidebar() {
+  sidebarOpen = false;
+  sidebar.classList.remove("open");
+  const overlay = document.getElementById("sidebarOverlay");
+  if (overlay) overlay.classList.remove("open");
+}
 
 // Load data directly from JSON files in data/ directory
 async function loadKind(kind) {
@@ -63,11 +90,13 @@ function ensure(kind) {
     cache[kind] = data;
     pending[kind] = null;
     updateCounts();
+    renderSidebar();
     return data;
   }).catch(() => {
     pending[kind] = null;
     cache[kind] = [];
     updateCounts();
+    renderSidebar();
     return [];
   });
   
@@ -75,8 +104,7 @@ function ensure(kind) {
 }
 
 function updateCounts() {
-  listeningCount.textContent = cache.listening?.length || "—";
-  readingCount.textContent = cache.reading?.length || "—";
+  // Count badges are no longer shown in UI
 }
 
 // Render functions
@@ -137,18 +165,6 @@ function renderListeningCards(rows) {
   );
   
   return `
-    <div class="section-header">
-      <div class="section-title listening">
-        <div class="icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-          </svg>
-        </div>
-        Listening
-      </div>
-      <span class="section-count">${rows.length} tests</span>
-    </div>
     <div class="cards-grid">
       ${sorted.map(row => `
         <button class="card" data-index="${row.i}" onclick="openListening(${row.i})">
@@ -195,18 +211,6 @@ function renderReadingList(rows) {
   }
   
   return `
-    <div class="section-header">
-      <div class="section-title reading">
-        <div class="icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-          </svg>
-        </div>
-        Reading
-      </div>
-      <span class="section-count">${sorted.length} passages${searchQuery ? " (filtered)" : ""}</span>
-    </div>
     <div class="reading-search">
       <div class="search-box" id="searchBox">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -237,6 +241,12 @@ function renderReadingList(rows) {
               <div class="reading-meta">
                 <span class="reading-badge">${testLabel}</span>
                 <span class="reading-meta-text">${metaInfo}</span>
+                <button class="reading-open" onclick="openReading(${row.i})" aria-label="View answers">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  </svg>
+                </button>
               </div>
             </div>
             <div class="reading-body">
@@ -257,19 +267,6 @@ function renderReadingList(rows) {
 function renderDetail(item) {
   return `
     <div class="detail-view">
-      <div class="detail-header">
-        <button class="back-btn" onclick="backToList()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M15 18l-6-6 6-6"/>
-          </svg>
-          Back
-        </button>
-        <div class="detail-breadcrumb">
-          <span>${item.cat}</span>
-          <span>›</span>
-          <strong>${item.name}</strong>
-        </div>
-      </div>
       <div class="detail-answers">
         <div class="answers-grid">
           ${item.keys.map((k, i) => `
@@ -287,27 +284,29 @@ function renderDetail(item) {
 function render() {
   if (searchQuery && currentTab === "listening") {
     currentTab = "reading";
-    updateTabs();
   }
-  
+
   if (currentDetail) {
     main.innerHTML = renderDetail(currentDetail);
     return;
   }
-  
+
   if (currentTab === "listening") {
     let rows = cache.listening || [];
-    
+
     // Apply filters
     if (filterKind === "listening") {
       if (filterCat) {
         rows = rows.filter(r => r.item.cat === filterCat);
         if (filterSubCat) {
           rows = rows.filter(r => r.item["sub-cat"] === filterSubCat);
+          if (filterName) {
+            rows = rows.filter(r => r.item.name === filterName);
+          }
         }
       }
     }
-    
+
     if (!rows.length) {
       main.innerHTML = renderLoading();
       if (!cache.listening) ensure("listening").then(render);
@@ -316,17 +315,20 @@ function render() {
     }
   } else {
     let rows = cache.reading || [];
-    
+
     // Apply filters
     if (filterKind === "reading") {
       if (filterCat) {
         rows = rows.filter(r => r.item.cat === filterCat);
         if (filterSubCat) {
           rows = rows.filter(r => r.item["sub-cat"] === filterSubCat);
+          if (filterName) {
+            rows = rows.filter(r => r.item.name === filterName);
+          }
         }
       }
     }
-    
+
     if (!rows.length) {
       main.innerHTML = renderLoading();
       if (!cache.reading) ensure("reading").then(render);
@@ -335,25 +337,22 @@ function render() {
       attachSearchListeners();
     }
   }
-}
-
-function updateTabs() {
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.classList.toggle("active", tab.dataset.tab === currentTab);
-  });
-  
-  // Show/hide search based on current tab
-  if (searchContainer) {
-    searchContainer.hidden = currentTab !== "reading";
-  }
+  updateBreadcrumb();
 }
 
 // Actions
 window.openListening = function(index) {
   const rows = cache.listening;
   if (!rows || !rows[index]) return;
-  currentDetail = rows[index].item;
+  const item = rows[index].item;
+  filterKind = "listening";
+  filterCat = item.cat;
+  filterSubCat = item["sub-cat"] || null;
+  filterName = item.name || null;
+  currentDetail = item;
   render();
+  renderSidebar();
+  updateBreadcrumb();
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
@@ -369,29 +368,33 @@ window.toggleReading = function(index) {
   }
 };
 
+window.openReading = function(index) {
+  const rows = cache.reading;
+  if (!rows || !rows[index]) return;
+  const item = rows[index].item;
+  filterKind = "reading";
+  filterCat = item.cat;
+  filterSubCat = item["sub-cat"] || null;
+  filterName = item.name || null;
+  currentDetail = item;
+  expandedItems.delete(index);
+  render();
+  renderSidebar();
+  updateBreadcrumb();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
 window.backToList = function() {
   currentDetail = null;
+  filterCat = null;
+  filterSubCat = null;
+  filterName = null;
   render();
+  renderSidebar();
 };
 
 // Drawer
-function openDrawer() {
-  drawerOpen = true;
-  drawer.inert = false;
-  drawer.classList.add("open");
-  drawerOverlay.classList.add("open");
-  drawerOverlay.hidden = false;
-}
-
-function closeDrawer() {
-  drawerOpen = false;
-  drawer.classList.remove("open");
-  drawerOverlay.classList.remove("open");
-  setTimeout(() => drawerOverlay.hidden = true, 250);
-  drawer.inert = true;
-}
-
-function renderDrawerNav() {
+function renderSidebar() {
   const listeningData = cache.listening || [];
   const readingData = cache.reading || [];
   
@@ -399,43 +402,63 @@ function renderDrawerNav() {
   const listeningByCat = groupBy(listeningData, "cat");
   const readingByCat = groupBy(readingData, "cat");
   
-  let html = `
-    <div class="drawer-tree">
-      <!-- Listening Section -->
-      <div class="tree-folder ${filterKind === 'listening' && !filterCat ? 'open' : ''}" data-type="listening">
-        <button class="tree-folder-header" onclick="toggleTreeFolder(this)">
-          <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-          </svg>
-          <span>Listening</span>
-          <span class="tree-count">${listeningData.length}</span>
-        </button>
-        <div class="tree-children">
-          ${listeningByCat.map(g => renderTreeCatGroup('listening', g, listeningData)).join("")}
-        </div>
-      </div>
-      
-      <!-- Reading Section -->
-      <div class="tree-folder ${filterKind === 'reading' && !filterCat ? 'open' : ''}" data-type="reading">
-        <button class="tree-folder-header" onclick="toggleTreeFolder(this)">
-          <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-          </svg>
-          <span>Reading</span>
-          <span class="tree-count">${readingData.length}</span>
-        </button>
-        <div class="tree-children">
-          ${readingByCat.map(g => renderTreeCatGroup('reading', g, readingData)).join("")}
-        </div>
-      </div>
+  sidebar.innerHTML = `
+    <div class="sidebar-header">
+      <span class="sidebar-title">Contents</span>
+      <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
     </div>
+    <nav class="sidebar-nav">
+      <div class="drawer-tree">
+        <!-- Listening Section -->
+        <div class="tree-folder ${filterKind === 'listening' ? 'open' : ''}" data-type="listening">
+          <div class="tree-folder-header">
+            <button class="tree-arrow-btn" onclick="toggleTreeFolder(this)">
+              <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <button class="tree-label-btn" onclick="setFilter('listening', null, null, null)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              </svg>
+              <span>Listening</span>
+              <span class="tree-count">${listeningData.length}</span>
+            </button>
+          </div>
+          <div class="tree-children">
+            ${listeningByCat.map(g => renderTreeCatGroup('listening', g, listeningData)).join("")}
+          </div>
+        </div>
+
+        <!-- Reading Section -->
+        <div class="tree-folder ${filterKind === 'reading' ? 'open' : ''}" data-type="reading">
+          <div class="tree-folder-header">
+            <button class="tree-arrow-btn" onclick="toggleTreeFolder(this)">
+              <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <button class="tree-label-btn" onclick="setFilter('reading', null, null, null)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              <span>Reading</span>
+              <span class="tree-count">${readingData.length}</span>
+            </button>
+          </div>
+          <div class="tree-children">
+            ${readingByCat.map(g => renderTreeCatGroup('reading', g, readingData)).join("")}
+          </div>
+        </div>
+      </div>
+    </nav>
+    <footer class="sidebar-footer">
+      <p class="sidebar-contributors"><strong>Contributors:</strong> <span id="contributorsList"></span></p>
+      <p id="updatedDate"></p>
+    </footer>
   `;
-  
-  drawerNav.innerHTML = html;
 }
 
 function renderTreeCatGroup(kind, catGroup, allData) {
@@ -445,21 +468,44 @@ function renderTreeCatGroup(kind, catGroup, allData) {
   
   return `
     <div class="tree-folder tree-sub ${isActive ? 'open' : ''}" data-type="${kind}" data-cat="${catName}">
-      <button class="tree-folder-header" onclick="toggleTreeFolder(this)">
-        <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-        <span>${catName}</span>
-        <span class="tree-count">${catGroup.count}</span>
-      </button>
+      <div class="tree-folder-header">
+        <button class="tree-arrow-btn" onclick="toggleTreeFolder(this)">
+          <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="tree-label-btn" onclick="setFilter('${kind}', '${catName}', null, null)">
+          <span>${catName}</span>
+          <span class="tree-count">${catGroup.count}</span>
+        </button>
+      </div>
       <div class="tree-children">
         ${subCatGroups.map(sg => `
-          <button class="tree-item ${filterKind === kind && filterCat === catName && filterSubCat === sg.key ? 'active' : ''}" 
-                  onclick="setFilter('${kind}', '${catName}', '${sg.key}'); closeDrawer();">
-            <span>${sg.key}</span>
-            <span class="tree-count">${sg.count}</span>
-          </button>
+          <div class="tree-folder tree-test ${filterKind === kind && filterCat === catName && filterSubCat === sg.key ? 'open' : ''}" data-type="${kind}" data-cat="${catName}" data-subcat="${sg.key}">
+            <div class="tree-folder-header">
+              <button class="tree-arrow-btn" onclick="toggleTreeFolder(this)">
+                <svg class="tree-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+              <button class="tree-label-btn" onclick="setFilter('${kind}', '${catName}', '${sg.key}', null);">
+                <span>${sg.key}</span>
+                <span class="tree-count">${sg.count}</span>
+              </button>
+            </div>
+            <div class="tree-children">
+              ${sg.tests.map(test => `
+                <button class="tree-item ${filterKind === kind && filterCat === catName && filterSubCat === sg.key && filterName === test ? 'active' : ''}"
+                        onclick="setFilter('${kind}', '${catName}', '${sg.key}', '${test}');">
+                  <span>${test}</span>
+                </button>
+              `).join("")}
+              <button class="tree-item ${filterKind === kind && filterCat === catName && filterSubCat === sg.key && !filterName ? 'active' : ''}"
+                      onclick="setFilter('${kind}', '${catName}', '${sg.key}', null);">
+                <span>All Tests</span>
+                <span class="tree-count">${sg.count}</span>
+              </button>
+            </div>
+          </div>
         `).join("")}
-        <button class="tree-item ${filterKind === kind && filterCat === catName && !filterSubCat ? 'active' : ''}" 
-                onclick="setFilter('${kind}', '${catName}', null); closeDrawer();">
+        <button class="tree-item ${filterKind === kind && filterCat === catName && !filterSubCat ? 'active' : ''}"
+                onclick="setFilter('${kind}', '${catName}', null);">
           <span>All ${catName}</span>
           <span class="tree-count">${catGroup.count}</span>
         </button>
@@ -473,15 +519,16 @@ window.toggleTreeFolder = function(btn) {
   folder.classList.toggle('open');
 };
 
-window.setFilter = function(kind, cat, subCat) {
+window.setFilter = function(kind, cat, subCat, name) {
   filterKind = kind;
   filterCat = cat;
   filterSubCat = subCat || null;
+  filterName = name || null;
   currentTab = kind;
   currentDetail = null;
-  updateTabs();
   render();
   updateBreadcrumb();
+  renderSidebar();
 };
 
 function groupBy(rows, key) {
@@ -498,63 +545,153 @@ function groupBySubCat(rows, key) {
   const map = new Map();
   rows.forEach(r => {
     const k = r.item[key] || "Other";
-    if (!map.has(k)) map.set(k, { key: k, count: 0 });
+    if (!map.has(k)) map.set(k, { key: k, count: 0, tests: [] });
     map.get(k).count++;
+    const testName = r.item.name;
+    if (testName && !map.get(k).tests.includes(testName)) {
+      map.get(k).tests.push(testName);
+    }
   });
   return [...map.values()].sort((a, b) => a.key.localeCompare(b.key));
 }
 
 window.selectTab = function(tab) {
-  filterKind = null;
+  // Reset filter to match the selected tab
+  filterKind = tab === "listening" ? "listening" : "reading";
   filterCat = null;
   filterSubCat = null;
+  filterName = null;
   currentTab = tab;
   currentDetail = null;
-  updateTabs();
   render();
   updateBreadcrumb();
+  renderSidebar();
 };
-
-window.closeDrawer = closeDrawer;
 
 // Breadcrumb
 const breadcrumb = document.getElementById("breadcrumb");
 
 function updateBreadcrumb() {
   if (!breadcrumb) return;
-  
-  if (!filterKind) {
-    breadcrumb.style.display = "none";
+  breadcrumb.style.display = "flex";
+
+  const kindLabel = (k) => k === "listening" ? "Listening" : "Reading";
+
+  // Helper to compute count from current filtered state
+  const getCount = () => {
+    if (currentDetail) return 1;
+    if (currentTab === "listening") {
+      let rows = cache.listening || [];
+      if (filterKind === "listening") {
+        if (filterCat) {
+          rows = rows.filter(r => r.item.cat === filterCat);
+          if (filterSubCat) {
+            rows = rows.filter(r => r.item["sub-cat"] === filterSubCat);
+            if (filterName) rows = rows.filter(r => r.item.name === filterName);
+          }
+        }
+      }
+      return rows.length;
+    } else {
+      let rows = cache.reading || [];
+      if (filterKind === "reading") {
+        if (filterCat) {
+          rows = rows.filter(r => r.item.cat === filterCat);
+          if (filterSubCat) {
+            rows = rows.filter(r => r.item["sub-cat"] === filterSubCat);
+            if (filterName) rows = rows.filter(r => r.item.name === filterName);
+          }
+        }
+      }
+      // For reading, apply search filter to count
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        rows = rows.filter(row => {
+          const titles = Array.isArray(row.item.fl) ? row.item.fl : [row.item.fl];
+          const keys = row.item.keys || [];
+          return titles.some(t => t.toLowerCase().includes(q)) ||
+                 keys.some(k => k.toLowerCase().includes(q));
+        });
+      }
+      return rows.length;
+    }
+  };
+
+  const unit = currentTab === "listening" ? "tests" : "passages";
+  const countHtml = `<span class="breadcrumb-count">${getCount()} ${unit}</span>`;
+
+  // Detail view - show item info with filter context
+  if (currentDetail) {
+    const k = currentTab;
+    let html = `<button onclick="backToList()">${kindLabel(k)}</button>`;
+    const item = currentDetail;
+
+    if (filterCat || item.cat) {
+      const cat = filterCat || item.cat;
+      if (filterKind === currentTab) {
+        html += `<span class="breadcrumb-sep">›</span><button onclick="setFilter('${currentTab}', '${cat}', null, null)">${cat}</button>`;
+      } else {
+        html += `<span class="breadcrumb-sep">›</span><span>${cat}</span>`;
+      }
+    }
+    if (filterSubCat || item["sub-cat"]) {
+      const subCat = filterSubCat || item["sub-cat"];
+      if (filterKind === currentTab) {
+        html += `<span class="breadcrumb-sep">›</span><button onclick="setFilter('${currentTab}', '${filterCat || item.cat}', '${subCat}', null)">${subCat}</button>`;
+      } else {
+        html += `<span class="breadcrumb-sep">›</span><span>${subCat}</span>`;
+      }
+    }
+    if (filterName) {
+      html += `<span class="breadcrumb-sep">›</span><button onclick="setFilter('${currentTab}', '${filterCat}', '${filterSubCat}', '${filterName}')">${filterName}</button>`;
+    }
+
+    html += `<span class="breadcrumb-sep">›</span><span class="breadcrumb-current">details</span>`;
+    breadcrumb.innerHTML = html;
     return;
   }
-  
-  breadcrumb.style.display = "flex";
-  const kindLabel = filterKind === "listening" ? "Listening" : "Reading";
-  const icon = filterKind === "listening" 
-    ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>`
-    : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`;
-  
-  if (filterSubCat) {
-    breadcrumb.innerHTML = `
-      <button onclick="clearFilter()">${icon} ${kindLabel}</button>
+
+  // List view - always show breadcrumb
+  const k = filterKind || currentTab || "listening";
+  let html = "";
+
+  if (filterName) {
+    html = `
+      <button onclick="clearFilter()">${kindLabel(k)}</button>
       <span class="breadcrumb-sep">›</span>
-      <button onclick="setFilter('${filterKind}', '${filterCat}', null)">${filterCat}</button>
+      <button onclick="setFilter('${k}', '${filterCat}', null, null)">${filterCat}</button>
+      <span class="breadcrumb-sep">›</span>
+      <button onclick="setFilter('${k}', '${filterCat}', '${filterSubCat}', null)">${filterSubCat}</button>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">${filterName}</span>
+    `;
+  } else if (filterSubCat) {
+    html = `
+      <button onclick="clearFilter()">${kindLabel(k)}</button>
+      <span class="breadcrumb-sep">›</span>
+      <button onclick="setFilter('${k}', '${filterCat}', null, null)">${filterCat}</button>
       <span class="breadcrumb-sep">›</span>
       <span class="breadcrumb-current">${filterSubCat}</span>
     `;
   } else if (filterCat) {
-    breadcrumb.innerHTML = `
-      <button onclick="clearFilter()">${icon} ${kindLabel}</button>
+    html = `
+      <button onclick="clearFilter()">${kindLabel(k)}</button>
       <span class="breadcrumb-sep">›</span>
       <span class="breadcrumb-current">${filterCat}</span>
     `;
+  } else {
+    html = `<span class="breadcrumb-current">${kindLabel(k)}</span>`;
   }
+
+  html += `<span class="breadcrumb-spacer"></span>${countHtml}`;
+  breadcrumb.innerHTML = html;
 }
 
 window.clearFilter = function() {
-  filterKind = null;
+  filterKind = currentTab;
   filterCat = null;
   filterSubCat = null;
+  filterName = null;
   updateBreadcrumb();
   render();
 };
@@ -588,35 +725,16 @@ function attachSearchListeners() {
   });
 }
 
-// Tabs
-tabs.addEventListener("click", e => {
-  const tab = e.target.closest(".tab");
-  if (!tab) return;
-  currentTab = tab.dataset.tab;
-  currentDetail = null;
-  updateTabs();
-  render();
-  if (searchQuery) {
-    searchInput.value = "";
-    searchQuery = "";
-    searchBox.classList.remove("has-value");
-  }
-});
+// Menu button - toggle sidebar on mobile
+if (menuBtn) {
+  menuBtn.addEventListener("click", toggleSidebar);
+}
 
-// Drawer
-menuBtn.addEventListener("click", () => {
-  if (drawerOpen) closeDrawer();
-  else {
-    renderDrawerNav();
-    openDrawer();
-  }
-});
-closeDrawerBtn.addEventListener("click", closeDrawer);
-drawerOverlay.addEventListener("click", closeDrawer);
+// Sidebar (always visible on desktop)
+renderSidebar();
 
-// Keyboard
+// Keyboard shortcut for search
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape" && drawerOpen) closeDrawer();
   if (e.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
     e.preventDefault();
     searchInput.focus();
@@ -627,6 +745,17 @@ document.addEventListener("keydown", e => {
 ensure("listening");
 ensure("reading");
 render();
+renderSidebar();
+
+// Menu button - toggle sidebar on mobile
+if (menuBtn) {
+  menuBtn.addEventListener("click", toggleSidebar);
+}
+
+// Handle resize
+window.addEventListener("resize", () => {
+  if (!isMobile()) closeSidebar();
+});
 
 // Theme toggle
 let isDark = localStorage.getItem("theme") === "dark" || 
@@ -662,6 +791,7 @@ const sortBtn = document.getElementById("sortBtn");
 sortBtn?.addEventListener("click", () => {
   sortDir *= -1;
   sortBtn.classList.toggle("active", sortDir === -1);
+  sortBtn.querySelector(".sort-btn-text").textContent = sortDir === 1 ? "A-Z" : "Z-A";
   render();
 });
 
@@ -707,14 +837,28 @@ function copyToClipboard(text) {
 
 // Search bar sticky shadow on scroll
 const updatedDate = document.getElementById("updatedDate");
+const contributorsList = document.getElementById("contributorsList");
 const owner = location.hostname.endsWith(".github.io") ? location.hostname.slice(0, -10) : "";
 if (owner) {
+  // Fetch contributors
+  fetch(`https://api.github.com/repos/${owner}/${owner}.github.io/contributors?per_page=10`)
+    .then(r => r.json())
+    .then(data => {
+      if (Array.isArray(data) && data.length) {
+        contributorsList.innerHTML = data.map(c => 
+          `<a href="${c.html_url}" target="_blank">${c.login}</a>`
+        ).join(", ");
+      }
+    })
+    .catch(() => {});
+
+  // Fetch last commit
   fetch(`https://api.github.com/repos/${owner}/${owner}.github.io/commits?per_page=1`)
     .then(r => r.json())
     .then(data => {
       if (data[0]?.commit?.committer?.date) {
         const d = new Date(data[0].commit.committer.date);
-        updatedDate.innerHTML = `<p><strong>Updated:</strong> ${d.toLocaleDateString()}</p>`;
+        updatedDate.innerHTML = `<p><strong>Last Update:</strong> ${d.toLocaleDateString()}</p>`;
       }
     })
     .catch(() => {});
