@@ -155,29 +155,45 @@ async function setCachedData(key, data) {
 async function loadKind(kind) {
   if (!manifest) await loadManifest();
   
-  const url = manifest[kind];
-  if (!url) throw new Error("Unknown kind: " + kind);
+  const files = manifest[kind];
+  if (!files || !Array.isArray(files)) throw new Error("Unknown kind: " + kind);
   
-  // Check IndexedDB cache first
-  const cached = await getCachedData(url);
-  if (cached && Array.isArray(cached)) {
-    console.log(`Loaded ${kind} from IndexedDB cache`);
-    return cached.map((item, i) => ({ item, file: url, i }));
+  // Load all files for this kind and merge
+  const allItems = [];
+  
+  for (const url of files) {
+    // Check IndexedDB cache first
+    let cached = await getCachedData(url);
+    
+    if (!cached || !Array.isArray(cached)) {
+      // Fetch fresh if no cache or expired
+      const res = await fetch(url);
+      if (!res.ok) {
+        console.warn("Failed to load", url);
+        continue;
+      }
+      
+      const data = await res.json();
+      if (!Array.isArray(data)) {
+        console.warn("Invalid data format in", url);
+        continue;
+      }
+      
+      // Store in IndexedDB
+      await setCachedData(url, data);
+      cached = data;
+      console.log(`Fetched and cached ${url} (${(JSON.stringify(data).length / 1024).toFixed(1)}KB)`);
+    } else {
+      console.log(`Loaded ${url} from cache`);
+    }
+    
+    // Add index and source file for tracking
+    cached.forEach((item, i) => {
+      allItems.push({ item, file: url, i });
+    });
   }
   
-  // Fetch fresh if no cache or expired
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to load " + url);
-  
-  const data = await res.json();
-  if (!Array.isArray(data)) throw new Error("Invalid data format");
-  
-  // Store in IndexedDB
-  await setCachedData(url, data);
-  console.log(`Fetched and cached ${kind} (${(JSON.stringify(data).length / 1024).toFixed(1)}KB)`);
-  
-  // Add index for tracking
-  return data.map((item, i) => ({ item, file: url, i }));
+  return allItems;
 }
 
 function ensure(kind) {
