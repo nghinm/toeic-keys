@@ -1,0 +1,14 @@
+{
+  "kinds": {
+    "listening": {
+      "label": "Listening",
+      "icon": "🎧",
+      "file": "data/l-hacker-keys.json"
+    },
+    "reading": {
+      "label": "Reading", 
+      "icon": "📖",
+      "file": "data/r-hacker-keys.json"
+    }
+  }
+}

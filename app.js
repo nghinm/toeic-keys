@@ -69,6 +69,7 @@ const STORE_NAME = "data-cache";
 const CACHE_EXPIRY = 60 * 60 * 1000; // 1 hour
 
 let db = null;
+let manifest = null; // Will be loaded from data/manifest.json
 
 async function openDB() {
   if (db) return db;
@@ -131,15 +132,14 @@ async function setCachedData(key, data) {
   }
 }
 
-// Load data with IndexedDB cache
+// Load data with IndexedDB cache (using manifest)
 async function loadKind(kind) {
-  const files = {
-    listening: "data/l-hacker-keys.json",
-    reading: "data/r-hacker-keys.json"
-  };
+  if (!manifest) await loadManifest();
   
-  const url = files[kind];
-  if (!url) throw new Error("Unknown kind: " + kind);
+  const kindConfig = manifest.kinds[kind];
+  if (!kindConfig) throw new Error("Unknown kind: " + kind);
+  
+  const url = kindConfig.file;
   
   // Check IndexedDB cache first
   const cached = await getCachedData(url);
@@ -830,11 +830,22 @@ document.addEventListener("keydown", e => {
   }
 });
 
-// Init
-ensure("listening");
-ensure("reading");
-render();
-renderSidebar();
+// Init - load manifest first, then load all data kinds
+async function init() {
+  await loadManifest();
+  
+  // Load all kinds defined in manifest
+  if (manifest?.kinds) {
+    for (const kind of Object.keys(manifest.kinds)) {
+      ensure(kind);
+    }
+  }
+  
+  render();
+  renderSidebar();
+}
+
+init();
 
 // Menu button - toggle sidebar on mobile
 if (menuBtn) {
