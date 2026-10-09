@@ -20,11 +20,11 @@ data/
 git clone https://github.com/nghinm/toeic-keys.git
 cd toeic-keys
 
-# Enable git hooks
-./scripts/setup.sh
+# Enable git hooks (Node.js required)
+node scripts/setup.js
 ```
 
-After this, every `git commit` will automatically update `manifest.json`.
+Works on **Windows**, **Mac**, and **Linux**. After this, every `git commit` will automatically update `manifest.json`.
 
 ### How to Add
 
@@ -60,4 +60,7 @@ npx serve .
 
 # Generate manifest manually
 node scripts/generate-manifest.js
+
+# Setup git hooks
+node scripts/setup.js
 ```
