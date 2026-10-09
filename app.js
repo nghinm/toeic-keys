@@ -556,7 +556,7 @@ function renderSidebar() {
       </div>
     </nav>
     <footer class="sidebar-footer">
-      <p class="sidebar-contributors"><strong>Contributors:</strong> <a href="https://github.com/nghinm" target="_blank">nghinm</a></p>
+      <p class="sidebar-contributors"><strong>Contributors:</strong> <span id="contributorsList"><a href="https://github.com/nghinm" target="_blank">nghinm</a></span></p>
       <p id="updatedDate"><strong>Last Update:</strong> Recently</p>
     </footer>
   `;
@@ -939,8 +939,8 @@ const fallbackData = {
 };
 
 // Initialize with fallback data immediately
-contributorsList.innerHTML = fallbackData.contributors;
-updatedDate.innerHTML = `<p><strong>Last Update:</strong> ${fallbackData.lastUpdate}</p>`;
+if (contributorsList) contributorsList.innerHTML = fallbackData.contributors;
+if (updatedDate) updatedDate.innerHTML = `<p><strong>Last Update:</strong> ${fallbackData.lastUpdate}</p>`;
 
 // Optional: Try to fetch real data (will likely fail due to rate limit)
 async function fetchGitHubInfo() {
@@ -959,7 +959,7 @@ async function fetchGitHubInfo() {
       const repoData = await repoRes.json();
       
       // Update last commit date from pushed_at
-      if (repoData.pushed_at) {
+      if (repoData.pushed_at && updatedDate) {
         const d = new Date(repoData.pushed_at);
         updatedDate.innerHTML = `<p><strong>Last Update:</strong> ${d.toLocaleDateString()}</p>`;
       }
@@ -975,8 +975,8 @@ async function fetchGitHubInfo() {
     if (contributorsRes.ok) {
       const contributorsData = await contributorsRes.json();
       
-      if (Array.isArray(contributorsData) && contributorsData.length > 0) {
-        contributorsList.innerHTML = contributorsData.map(c => 
+      if (Array.isArray(contributorsData) && contributorsData.length > 0 && contributorsList) {
+        contributorsList.innerHTML = contributorsData.map(c =>
           `<a href="${c.html_url}" target="_blank">${c.login}</a>`
         ).join(", ");
       }
