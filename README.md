@@ -1,5 +1,6 @@
 # toeic-keys
-Answer keys of recent TOEIC tests.
+
+Answer keys of recent TOEIC tests. View online at: https://nghinm.github.io/toeic-keys
 
 ## Adding New Data Files
 
@@ -40,18 +41,42 @@ Works on **Windows**, **Mac**, and **Linux**. After this, every `git commit` wil
    The `manifest.json` will be **automatically updated** by the pre-commit hook.
 
 ### JSON File Format
+
+**Listening** (`data/listening/*.json`):
 ```json
 [
   {
-    "id": "L001",
-    "part": 1,
-    "question": 1,
-    "answer": "B",
-    "image": "images/L001.jpg",
-    "audio": "audio/L001.mp3"
+    "cat": "HACKER",
+    "sub-cat": "2",
+    "name": "TEST 1",
+    "first_img": {
+      "svg": "<svg>...</svg>"
+    }
   }
 ]
 ```
+
+**Reading** (`data/reading/*.json`):
+```json
+[
+  {
+    "cat": "HACKER",
+    "sub-cat": "2",
+    "name": "TEST 1",
+    "fl": "Cardigan Bay General Hospital Fundraising Dinner",
+    "keys": ["Answer 1", "Answer 2"]
+  }
+]
+```
+
+| Field | Listening | Reading | Required |
+|-------|-----------|---------|----------|
+| `cat` | ✓ | ✓ | Yes |
+| `sub-cat` | ✓ | ✓ | Yes |
+| `name` | ✓ | ✓ | Yes |
+| `first_img.svg` | ✓ | ✗ | Listening only |
+| `fl` | ✗ | ✓ | Reading only |
+| `keys` | ✗ | ✓ | Reading only |
 
 ### Development
 ```bash
