@@ -166,19 +166,34 @@ function renderListeningCards(rows) {
   
   return `
     <div class="cards-grid">
-      ${sorted.map(row => `
+      ${sorted.map(row => {
+        // Show meta based on current filter context (order: cat -> sub-cat -> name)
+        let cardMeta;
+        if (filterName && filterCat === row.item.cat && filterSubCat === row.item["sub-cat"]) {
+          // Already filtered to this test, hide meta
+          cardMeta = "";
+        } else if (filterSubCat && filterCat === row.item.cat) {
+          // Filtered to sub-cat, show name only
+          cardMeta = row.item.name || "";
+        } else if (filterCat && filterCat === row.item.cat) {
+          // Filtered to cat only, show sub-cat -> name
+          cardMeta = `${row.item["sub-cat"] || ""} • ${row.item.name || ""}`;
+        } else {
+          // No filter or different cat, show cat -> sub-cat -> name
+          cardMeta = `${row.item.cat || ""} • ${row.item["sub-cat"] || ""} • ${row.item.name || ""}`;
+        }
+        return `
         <button class="card" data-index="${row.i}" onclick="openListening(${row.i})">
           <div class="card-thumb">
             ${getSvg(row.item).outerHTML}
           </div>
           <div class="card-body">
-            <div class="card-title">${row.item.name || row.item.cat}</div>
-            <div class="card-meta">
-              <span>${row.item["sub-cat"] || row.item.cat}</span>
-            </div>
+            ${filterName ? `<div class="card-title">${row.item.name || row.item.cat}</div>` : ""}
+            ${cardMeta ? `<div class="card-meta"><span>${cardMeta}</span></div>` : ""}
           </div>
         </button>
-      `).join("")}
+        `;
+      }).join("")}
     </div>
   `;
 }
@@ -225,8 +240,15 @@ function renderReadingList(rows) {
       ${sorted.map(row => {
         const titles = Array.isArray(row.item.fl) ? row.item.fl : [row.item.fl];
         const isOpen = expandedItems.has(row.i);
-        const testLabel = `P${row.item["sub-cat"] || row.item.name}`;
-        const metaInfo = `${row.item.cat || ""} • ${row.item.name || ""}`;
+        // Show meta based on current filter context
+        let metaInfo;
+        if (filterName && filterCat === row.item.cat && filterSubCat === row.item["sub-cat"]) {
+          metaInfo = row.item.name || "";
+        } else if (filterSubCat && filterCat === row.item.cat) {
+          metaInfo = `${row.item["sub-cat"] || ""} • ${row.item.name || ""}`;
+        } else {
+          metaInfo = `${row.item.cat || ""} • ${row.item["sub-cat"] || ""} • ${row.item.name || ""}`;
+        }
         return `
           <div class="reading-item ${isOpen ? "expanded" : ""}" data-index="${row.i}">
             <div class="reading-main">
@@ -239,14 +261,7 @@ function renderReadingList(rows) {
                 <div class="reading-title">${titles[0] || "Untitled"}</div>
               </button>
               <div class="reading-meta">
-                <span class="reading-badge">${testLabel}</span>
                 <span class="reading-meta-text">${metaInfo}</span>
-                <button class="reading-open" onclick="openReading(${row.i})" aria-label="View answers">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                  </svg>
-                </button>
               </div>
             </div>
             <div class="reading-body">
@@ -376,8 +391,13 @@ window.openReading = function(index) {
   filterCat = item.cat;
   filterSubCat = item["sub-cat"] || null;
   filterName = item.name || null;
-  currentDetail = item;
   expandedItems.delete(index);
+  // Toggle expand/collapse instead of showing detail view
+  if (expandedItems.has(index)) {
+    expandedItems.delete(index);
+  } else {
+    expandedItems.add(index);
+  }
   render();
   renderSidebar();
   updateBreadcrumb();
@@ -455,8 +475,8 @@ function renderSidebar() {
       </div>
     </nav>
     <footer class="sidebar-footer">
-      <p class="sidebar-contributors"><strong>Contributors:</strong> <span id="contributorsList"></span></p>
-      <p id="updatedDate"></p>
+      <p class="sidebar-contributors"><strong>Contributors:</strong> <span id="contributorsList"><a href="https://github.com/nghinm" target="_blank">nghinm</a></span></p>
+      <p id="updatedDate"><strong>Last Update:</strong> Recently</p>
     </footer>
   `;
 }
@@ -496,19 +516,9 @@ function renderTreeCatGroup(kind, catGroup, allData) {
                   <span>${test}</span>
                 </button>
               `).join("")}
-              <button class="tree-item ${filterKind === kind && filterCat === catName && filterSubCat === sg.key && !filterName ? 'active' : ''}"
-                      onclick="setFilter('${kind}', '${catName}', '${sg.key}', null);">
-                <span>All Tests</span>
-                <span class="tree-count">${sg.count}</span>
-              </button>
             </div>
           </div>
         `).join("")}
-        <button class="tree-item ${filterKind === kind && filterCat === catName && !filterSubCat ? 'active' : ''}"
-                onclick="setFilter('${kind}', '${catName}', null);">
-          <span>All ${catName}</span>
-          <span class="tree-count">${catGroup.count}</span>
-        </button>
       </div>
     </div>
   `;
@@ -620,8 +630,8 @@ function updateBreadcrumb() {
   const unit = currentTab === "listening" ? "tests" : "passages";
   const countHtml = `<span class="breadcrumb-count">${getCount()} ${unit}</span>`;
 
-  // Detail view - show item info with filter context
-  if (currentDetail) {
+  // Detail view - show item info with filter context (only for listening)
+  if (currentDetail && currentTab === "listening") {
     const k = currentTab;
     let html = `<button onclick="backToList()">${kindLabel(k)}</button>`;
     const item = currentDetail;
@@ -643,10 +653,8 @@ function updateBreadcrumb() {
       }
     }
     if (filterName) {
-      html += `<span class="breadcrumb-sep">›</span><button onclick="setFilter('${currentTab}', '${filterCat}', '${filterSubCat}', '${filterName}')">${filterName}</button>`;
+      html += `<span class="breadcrumb-sep">›</span><span class="breadcrumb-current">${filterName}</span>`;
     }
-
-    html += `<span class="breadcrumb-sep">›</span><span class="breadcrumb-current">details</span>`;
     breadcrumb.innerHTML = html;
     return;
   }
@@ -840,33 +848,39 @@ const updatedDate = document.getElementById("updatedDate");
 const contributorsList = document.getElementById("contributorsList");
 const pathParts = location.pathname.split("/").filter(Boolean);
 const repoName = pathParts.length >= 1 ? pathParts[0] : "";
-if (repoName) {
-  // Fetch contributors
-  fetch(`https://api.github.com/repos/nghinm/${repoName}/contributors?per_page=10`)
-    .then(r => {
-      if (!r.ok) throw new Error("API error");
-      return r.json();
-    })
-    .then(data => {
-      if (Array.isArray(data) && data.length) {
-        contributorsList.innerHTML = data.map(c => 
+
+async function fetchGitHubInfo() {
+  if (!repoName) return;
+
+  try {
+    // Fetch repo info (includes pushed_at for last commit)
+    const repoRes = await fetch(`https://api.github.com/repos/nghinm/${repoName}`);
+    
+    if (repoRes.ok) {
+      const repoData = await repoRes.json();
+      
+      // Update last commit date from pushed_at
+      if (repoData.pushed_at) {
+        const d = new Date(repoData.pushed_at);
+        updatedDate.innerHTML = `<p><strong>Last Update:</strong> ${d.toLocaleDateString()}</p>`;
+      }
+    }
+
+    // Fetch contributors
+    const contributorsRes = await fetch(`https://api.github.com/repos/nghinm/${repoName}/contributors?per_page=10`);
+    
+    if (contributorsRes.ok) {
+      const contributorsData = await contributorsRes.json();
+      
+      if (Array.isArray(contributorsData) && contributorsData.length > 0) {
+        contributorsList.innerHTML = contributorsData.map(c => 
           `<a href="${c.html_url}" target="_blank">${c.login}</a>`
         ).join(", ");
       }
-    })
-    .catch(() => {});
-
-  // Fetch last commit
-  fetch(`https://api.github.com/repos/nghinm/${repoName}/commits?per_page=1`)
-    .then(r => {
-      if (!r.ok) throw new Error("API error");
-      return r.json();
-    })
-    .then(data => {
-      if (data[0]?.commit?.committer?.date) {
-        const d = new Date(data[0].commit.committer.date);
-        updatedDate.innerHTML = `<p><strong>Last Update:</strong> ${d.toLocaleDateString()}</p>`;
-      }
-    })
-    .catch(() => {});
+    }
+  } catch (err) {
+    console.log("GitHub API fetch failed");
+  }
 }
+
+fetchGitHubInfo();
