@@ -1,4 +1,8 @@
 {
-  "listening": ["data/listening/l-hacker-keys.json"],
-  "reading": ["data/reading/r-hacker-keys.json"]
+  "listening": [
+    "data/listening/l-hacker-keys.json"
+  ],
+  "reading": [
+    "data/reading/r-hacker-keys.json"
+  ]
 }
