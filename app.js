@@ -62,14 +62,76 @@ function closeSidebar() {
   if (overlay) overlay.classList.remove("open");
 }
 
-// Cache keys
-const CACHE_KEYS = {
-  listening: "toeic_keys_listening",
-  reading: "toeic_keys_reading"
-};
+// IndexedDB for caching larger JSON files (much better than localStorage 5MB limit)
+const DB_NAME = "toeic-keys-cache";
+const DB_VERSION = 1;
+const STORE_NAME = "data-cache";
 const CACHE_EXPIRY = 60 * 60 * 1000; // 1 hour
 
-// Load data with localStorage cache
+let db = null;
+
+async function openDB() {
+  if (db) return db;
+  
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    
+    request.onerror = () => reject(request.error);
+    
+    request.onsuccess = () => {
+      db = request.result;
+      resolve(db);
+    };
+    
+    request.onupgradeneeded = (e) => {
+      const database = e.target.result;
+      if (!database.objectStoreNames.contains(STORE_NAME)) {
+        database.createObjectStore(STORE_NAME, { keyPath: "key" });
+      }
+    };
+  });
+}
+
+async function getCachedData(key) {
+  try {
+    const database = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = database.transaction(STORE_NAME, "readonly");
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.get(key);
+      
+      req.onsuccess = () => {
+        const result = req.result;
+        if (!result) return resolve(null);
+        
+        const isExpired = Date.now() - result.timestamp > CACHE_EXPIRY;
+        resolve(isExpired ? null : result.data);
+      };
+      
+      req.onerror = () => reject(req.error);
+    });
+  } catch (e) {
+    return null;
+  }
+}
+
+async function setCachedData(key, data) {
+  try {
+    const database = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = database.transaction(STORE_NAME, "readwrite");
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.put({ key, data, timestamp: Date.now() });
+      
+      req.onsuccess = () => resolve();
+      req.onerror = () => reject(req.error);
+    });
+  } catch (e) {
+    console.warn("Cache write failed:", e);
+  }
+}
+
+// Load data with IndexedDB cache
 async function loadKind(kind) {
   const files = {
     listening: "data/l-hacker-keys.json",
@@ -79,21 +141,11 @@ async function loadKind(kind) {
   const url = files[kind];
   if (!url) throw new Error("Unknown kind: " + kind);
   
-  // Check localStorage cache first
-  const cacheKey = CACHE_KEYS[kind];
-  const cached = localStorage.getItem(cacheKey);
-  if (cached) {
-    try {
-      const { data, timestamp } = JSON.parse(cached);
-      const isExpired = Date.now() - timestamp > CACHE_EXPIRY;
-      
-      if (!isExpired && Array.isArray(data)) {
-        console.log(`Loaded ${kind} from cache`);
-        return data.map((item, i) => ({ item, file: url, i }));
-      }
-    } catch (e) {
-      localStorage.removeItem(cacheKey);
-    }
+  // Check IndexedDB cache first
+  const cached = await getCachedData(url);
+  if (cached && Array.isArray(cached)) {
+    console.log(`Loaded ${kind} from IndexedDB cache`);
+    return cached.map((item, i) => ({ item, file: url, i }));
   }
   
   // Fetch fresh if no cache or expired
@@ -103,12 +155,9 @@ async function loadKind(kind) {
   const data = await res.json();
   if (!Array.isArray(data)) throw new Error("Invalid data format");
   
-  // Store in cache
-  localStorage.setItem(cacheKey, JSON.stringify({
-    data,
-    timestamp: Date.now()
-  }));
-  console.log(`Fetched and cached ${kind}`);
+  // Store in IndexedDB
+  await setCachedData(url, data);
+  console.log(`Fetched and cached ${kind} (${(JSON.stringify(data).length / 1024).toFixed(1)}KB)`);
   
   // Add index for tracking
   return data.map((item, i) => ({ item, file: url, i }));
