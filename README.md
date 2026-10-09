@@ -51,7 +51,8 @@ Works on **Windows**, **Mac**, and **Linux**. After this, every `git commit` wil
     "name": "TEST 1",
     "first_img": {
       "svg": "<svg>...</svg>"
-    }
+    },
+    "keys": ["A", "B"]
   }
 ]
 ```
@@ -76,7 +77,7 @@ Works on **Windows**, **Mac**, and **Linux**. After this, every `git commit` wil
 | `name` | ✓ | ✓ | Yes |
 | `first_img.svg` | ✓ | ✗ | Listening only |
 | `fl` | ✗ | ✓ | Reading only |
-| `keys` | ✗ | ✓ | Reading only |
+| `keys` | ✓ | ✓ | Yes |
 
 ### Development
 ```bash
