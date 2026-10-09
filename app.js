@@ -62,7 +62,14 @@ function closeSidebar() {
   if (overlay) overlay.classList.remove("open");
 }
 
-// Load data directly from JSON files in data/ directory
+// Cache keys
+const CACHE_KEYS = {
+  listening: "toeic_keys_listening",
+  reading: "toeic_keys_reading"
+};
+const CACHE_EXPIRY = 60 * 60 * 1000; // 1 hour
+
+// Load data with localStorage cache
 async function loadKind(kind) {
   const files = {
     listening: "data/l-hacker-keys.json",
@@ -72,11 +79,36 @@ async function loadKind(kind) {
   const url = files[kind];
   if (!url) throw new Error("Unknown kind: " + kind);
   
-  const res = await fetch(url, { cache: "no-store" });
+  // Check localStorage cache first
+  const cacheKey = CACHE_KEYS[kind];
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    try {
+      const { data, timestamp } = JSON.parse(cached);
+      const isExpired = Date.now() - timestamp > CACHE_EXPIRY;
+      
+      if (!isExpired && Array.isArray(data)) {
+        console.log(`Loaded ${kind} from cache`);
+        return data.map((item, i) => ({ item, file: url, i }));
+      }
+    } catch (e) {
+      localStorage.removeItem(cacheKey);
+    }
+  }
+  
+  // Fetch fresh if no cache or expired
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to load " + url);
   
   const data = await res.json();
   if (!Array.isArray(data)) throw new Error("Invalid data format");
+  
+  // Store in cache
+  localStorage.setItem(cacheKey, JSON.stringify({
+    data,
+    timestamp: Date.now()
+  }));
+  console.log(`Fetched and cached ${kind}`);
   
   // Add index for tracking
   return data.map((item, i) => ({ item, file: url, i }));
