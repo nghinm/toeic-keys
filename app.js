@@ -71,6 +71,25 @@ const CACHE_EXPIRY = 60 * 60 * 1000; // 1 hour
 let db = null;
 let manifest = null; // Will be loaded from data/manifest.json
 
+// Load manifest from data/manifest.json
+async function loadManifest() {
+  try {
+    const res = await fetch("data/manifest.json");
+    if (!res.ok) throw new Error("Failed to load manifest");
+    manifest = await res.json();
+    console.log("Loaded manifest:", Object.keys(manifest));
+    return manifest;
+  } catch (e) {
+    console.error("Manifest load failed:", e);
+    // Fallback
+    manifest = {
+      listening: "data/l-hacker-keys.json",
+      reading: "data/r-hacker-keys.json"
+    };
+    return manifest;
+  }
+}
+
 async function openDB() {
   if (db) return db;
   
@@ -136,10 +155,8 @@ async function setCachedData(key, data) {
 async function loadKind(kind) {
   if (!manifest) await loadManifest();
   
-  const kindConfig = manifest.kinds[kind];
-  if (!kindConfig) throw new Error("Unknown kind: " + kind);
-  
-  const url = kindConfig.file;
+  const url = manifest[kind];
+  if (!url) throw new Error("Unknown kind: " + kind);
   
   // Check IndexedDB cache first
   const cached = await getCachedData(url);
@@ -835,10 +852,8 @@ async function init() {
   await loadManifest();
   
   // Load all kinds defined in manifest
-  if (manifest?.kinds) {
-    for (const kind of Object.keys(manifest.kinds)) {
-      ensure(kind);
-    }
+  for (const kind of Object.keys(manifest)) {
+    ensure(kind);
   }
   
   render();
