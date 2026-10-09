@@ -13,6 +13,15 @@ data/
     └── *.json
 ```
 
+### Setup (One-time)
+
+```bash
+# Enable git hooks
+chmod +x .git/hooks/pre-commit
+```
+
+After this, every `git commit` will automatically update `manifest.json`.
+
 ### How to Add
 
 1. **Add JSON file** to `data/listening/` or `data/reading/`
