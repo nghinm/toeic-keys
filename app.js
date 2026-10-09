@@ -81,10 +81,10 @@ async function loadManifest() {
     return manifest;
   } catch (e) {
     console.error("Manifest load failed:", e);
-    // Fallback
+    // Fallback - old flat format for backwards compat
     manifest = {
-      listening: "data/l-hacker-keys.json",
-      reading: "data/r-hacker-keys.json"
+      listening: { Hacker: ["data/listening/l-hacker-keys.json"] },
+      reading: { Hacker: ["data/reading/r-hacker-keys.json"] }
     };
     return manifest;
   }
@@ -155,42 +155,74 @@ async function setCachedData(key, data) {
 async function loadKind(kind) {
   if (!manifest) await loadManifest();
   
-  const files = manifest[kind];
-  if (!files || !Array.isArray(files)) throw new Error("Unknown kind: " + kind);
+  // manifest[kind] is now: { "CategoryName": ["file1.json", "file2.json"], ... }
+  const categories = manifest[kind];
+  if (!categories || typeof categories !== 'object') throw new Error("Unknown kind: " + kind);
   
-  // Load all files for this kind and merge
+  // Load all files from all categories and merge
   const allItems = [];
   
-  for (const url of files) {
-    // Check IndexedDB cache first
-    let cached = await getCachedData(url);
-    
-    if (!cached || !Array.isArray(cached)) {
-      // Fetch fresh if no cache or expired
-      const res = await fetch(url);
-      if (!res.ok) {
-        console.warn("Failed to load", url);
-        continue;
+  for (const catName of Object.keys(categories)) {
+    const files = categories[catName];
+    for (const url of files) {
+      // Check IndexedDB cache first
+      let cached = await getCachedData(url);
+      
+      if (!cached || !Array.isArray(cached)) {
+        // Fetch fresh if no cache or expired
+        try {
+          const res = await fetch(url);
+          if (!res.ok) {
+            console.error(`❌ [${url}] HTTP ${res.status}`);
+            continue;
+          }
+          
+          const data = await res.json();
+          if (!Array.isArray(data)) {
+            console.error(`❌ [${url}] Not an array, got: ${typeof data}`);
+            continue;
+          }
+          
+          // Store in IndexedDB
+          await setCachedData(url, data);
+          cached = data;
+          console.log(`✓ [${url}] ${data.length} items`);
+        } catch (e) {
+          console.error(`❌ [${url}] ${e.name}: ${e.message}`);
+          continue;
+        }
+      } else {
+        console.log(`✓ [${url}] from cache`);
       }
       
-      const data = await res.json();
-      if (!Array.isArray(data)) {
-        console.warn("Invalid data format in", url);
-        continue;
-      }
-      
-      // Store in IndexedDB
-      await setCachedData(url, data);
-      cached = data;
-      console.log(`Fetched and cached ${url} (${(JSON.stringify(data).length / 1024).toFixed(1)}KB)`);
-    } else {
-      console.log(`Loaded ${url} from cache`);
+      // Add valid items only, skip invalid
+      cached.forEach((item, i) => {
+        // Skip items missing required fields (different for listening vs reading)
+        if (!item || typeof item !== 'object') {
+          console.warn(`⚠️ [${url}:${i}] Not an object, skipped`);
+          return;
+        }
+        
+        // Validate based on kind
+        if (kind === 'listening') {
+          if (!item.first_img || !item.first_img.svg) {
+            console.warn(`⚠️ [${url}:${i}] Missing first_img.svg, skipped (name: "${item.name || 'N/A'}")`);
+            return;
+          }
+        } else if (kind === 'reading') {
+          if (!item.fl) {
+            console.warn(`⚠️ [${url}:${i}] Missing fl (filename), skipped (name: "${item.name || 'N/A'}")`);
+            return;
+          }
+          if (!item.keys || !Array.isArray(item.keys)) {
+            console.warn(`⚠️ [${url}:${i}] Missing keys array, skipped (name: "${item.name || 'N/A'}")`);
+            return;
+          }
+        }
+        
+        allItems.push({ item, file: url, i, globalIndex: allItems.length });
+      });
     }
-    
-    // Add index and source file for tracking
-    cached.forEach((item, i) => {
-      allItems.push({ item, file: url, i });
-    });
   }
   
   return allItems;
@@ -254,10 +286,23 @@ function renderLoading() {
 }
 
 function getSvg(item) {
+  if (!item || typeof item !== 'object') {
+    console.warn(`⚠️ [getSvg] Invalid item`);
+    return null;
+  }
+  if (!item.first_img || !item.first_img.svg) {
+    console.warn(`⚠️ [getSvg] Missing first_img.svg for: "${item.name || item.fl || 'N/A'}"`);
+    return null;
+  }
   if (svgCache.has(item)) return svgCache.get(item).cloneNode(true);
-  const tmpl = new DOMParser().parseFromString(item.first_img.svg, "image/svg+xml").documentElement;
-  svgCache.set(item, tmpl);
-  return tmpl.cloneNode(true);
+  try {
+    const tmpl = new DOMParser().parseFromString(item.first_img.svg, "image/svg+xml").documentElement;
+    svgCache.set(item, tmpl);
+    return tmpl.cloneNode(true);
+  } catch (e) {
+    console.error(`❌ [getSvg] Parse SVG failed for "${item.name || item.fl || 'N/A'}": ${e.message}`);
+    return null;
+  }
 }
 
 function renderListeningCards(rows) {
@@ -281,6 +326,10 @@ function renderListeningCards(rows) {
   return `
     <div class="cards-grid">
       ${sorted.map(row => {
+        // Skip items without valid SVG
+        const svgEl = getSvg(row.item);
+        if (!svgEl) return "";
+        
         // Show meta based on current filter context (order: cat -> sub-cat -> name)
         let cardMeta;
         if (filterName && filterCat === row.item.cat && filterSubCat === row.item["sub-cat"]) {
@@ -297,9 +346,9 @@ function renderListeningCards(rows) {
           cardMeta = `${row.item.cat || ""} • ${row.item["sub-cat"] || ""} • ${row.item.name || ""}`;
         }
         return `
-        <button class="card" data-index="${row.i}" onclick="openListening(${row.i})">
+        <button class="card" data-index="${row.globalIndex}" onclick="openListening(${row.globalIndex})">
           <div class="card-thumb">
-            ${getSvg(row.item).outerHTML}
+            ${svgEl.outerHTML}
           </div>
           <div class="card-body">
             ${filterName ? `<div class="card-title">${row.item.name || row.item.cat}</div>` : ""}
@@ -364,9 +413,9 @@ function renderReadingList(rows) {
           metaInfo = `${row.item.cat || ""} • ${row.item["sub-cat"] || ""} • ${row.item.name || ""}`;
         }
         return `
-          <div class="reading-item ${isOpen ? "expanded" : ""}" data-index="${row.i}">
+          <div class="reading-item ${isOpen ? "expanded" : ""}" data-index="${row.globalIndex}">
             <div class="reading-main">
-              <button class="reading-header" onclick="toggleReading(${row.i})">
+              <button class="reading-header" onclick="toggleReading(${row.globalIndex})">
                 <div class="reading-expand">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
                     <path d="M9 18l6-6-6-6"/>
