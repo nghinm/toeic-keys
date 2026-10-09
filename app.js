@@ -475,7 +475,7 @@ function renderSidebar() {
       </div>
     </nav>
     <footer class="sidebar-footer">
-      <p class="sidebar-contributors"><strong>Contributors:</strong> <span id="contributorsList"><a href="https://github.com/nghinm" target="_blank">nghinm</a></span></p>
+      <p class="sidebar-contributors"><strong>Contributors:</strong> <a href="https://github.com/nghinm" target="_blank">nghinm</a></p>
       <p id="updatedDate"><strong>Last Update:</strong> Recently</p>
     </footer>
   `;
@@ -844,17 +844,35 @@ function copyToClipboard(text) {
 }
 
 // Search bar sticky shadow on scroll
+// Note: GitHub API rate limit (60 req/hour for unauthenticated) is too restrictive
+// for a public site. Using static fallback data for reliability.
 const updatedDate = document.getElementById("updatedDate");
 const contributorsList = document.getElementById("contributorsList");
 const pathParts = location.pathname.split("/").filter(Boolean);
 const repoName = pathParts.length >= 1 ? pathParts[0] : "";
 
+// Static fallback data (will show by default)
+const fallbackData = {
+  contributors: '<a href="https://github.com/nghinm" target="_blank">nghinm</a>',
+  lastUpdate: new Date().toLocaleDateString()
+};
+
+// Initialize with fallback data immediately
+contributorsList.innerHTML = fallbackData.contributors;
+updatedDate.innerHTML = `<p><strong>Last Update:</strong> ${fallbackData.lastUpdate}</p>`;
+
+// Optional: Try to fetch real data (will likely fail due to rate limit)
 async function fetchGitHubInfo() {
   if (!repoName) return;
 
   try {
-    // Fetch repo info (includes pushed_at for last commit)
-    const repoRes = await fetch(`https://api.github.com/repos/nghinm/${repoName}`);
+    // Add timestamp to avoid cached responses and test the API
+    const repoRes = await fetch(`https://api.github.com/repos/nghinm/${repoName}?t=${Date.now()}`);
+    
+    if (repoRes.status === 403) {
+      // Rate limited - keep fallback data
+      return;
+    }
     
     if (repoRes.ok) {
       const repoData = await repoRes.json();
@@ -867,7 +885,11 @@ async function fetchGitHubInfo() {
     }
 
     // Fetch contributors
-    const contributorsRes = await fetch(`https://api.github.com/repos/nghinm/${repoName}/contributors?per_page=10`);
+    const contributorsRes = await fetch(`https://api.github.com/repos/nghinm/${repoName}/contributors?per_page=10&t=${Date.now()}`);
+    
+    if (contributorsRes.status === 403) {
+      return;
+    }
     
     if (contributorsRes.ok) {
       const contributorsData = await contributorsRes.json();
@@ -879,8 +901,9 @@ async function fetchGitHubInfo() {
       }
     }
   } catch (err) {
-    console.log("GitHub API fetch failed");
+    // Keep fallback data on error
   }
 }
 
+// Run fetch (will likely hit rate limit)
 fetchGitHubInfo();
