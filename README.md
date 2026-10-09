@@ -16,8 +16,12 @@ data/
 ### Setup (One-time)
 
 ```bash
+# Clone repo
+git clone https://github.com/nghinm/toeic-keys.git
+cd toeic-keys
+
 # Enable git hooks
-chmod +x .git/hooks/pre-commit
+./scripts/setup.sh
 ```
 
 After this, every `git commit` will automatically update `manifest.json`.

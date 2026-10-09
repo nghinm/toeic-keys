@@ -1,0 +1,9 @@
+#!/bin/bash
+# Auto-generate manifest.json before commit
+
+echo "Generating manifest.json..."
+cd "$(git rev-parse --show-toplevel)"
+node scripts/generate-manifest.js
+
+# Add manifest changes if any
+git add data/manifest.json
