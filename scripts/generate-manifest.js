@@ -10,8 +10,8 @@ function getCategoryFromFile(filePath) {
   try {
     const content = fs.readFileSync(filePath, 'utf8');
     const data = JSON.parse(content);
-    if (Array.isArray(data) && data.length > 0 && data[0].cat) {
-      return data[0].cat;
+    if (Array.isArray(data) && data.length > 0 && Array.isArray(data[0]) && data[0][2]) {
+      return data[0][2];
     }
     return 'Unknown';
   } catch (e) {

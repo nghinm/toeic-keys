@@ -42,42 +42,26 @@ Works on **Windows**, **Mac**, and **Linux**. After this, every `git commit` wil
 
 ### JSON File Format
 
+Each file is a **compact JSON array** (no pretty-print). Every record is an array of field values in fixed order (not an object with keys).
+
+| Index | Field | Listening | Reading |
+|-------|-------|-----------|---------|
+| `[i][0]` | test-name | ✓ | ✓ |
+| `[i][1]` | sub-category | ✓ | ✓ |
+| `[i][2]` | category | ✓ | ✓ |
+| `[i][3]` | first-image (object with `svg`) | ✓ | — |
+| `[i][3]` | first-line (first-line string or array of first-lines) | — | ✓ |
+| `[i][4]` | keys | ✓ | ✓ |
+
 **Listening** (`data/listening/*.json`):
 ```json
-[
-  {
-    "cat": "HACKER",
-    "sub-cat": "2",
-    "name": "TEST 1",
-    "first_img": {
-      "svg": "<svg>...</svg>"
-    },
-    "keys": ["A", "B"]
-  }
-]
+[["TEST 1","2","HACKER",{"svg":"<svg>...</svg>"},["A","B"]]]
 ```
 
 **Reading** (`data/reading/*.json`):
 ```json
-[
-  {
-    "cat": "HACKER",
-    "sub-cat": "2",
-    "name": "TEST 1",
-    "fl": "Cardigan Bay General Hospital Fundraising Dinner",
-    "keys": ["Answer 1", "Answer 2"]
-  }
-]
+[["TEST 1","2","HACKER","This is the first line of the passage",["Answer of question 1","Answer of questionn 2"]]]
 ```
-
-| Field | Listening | Reading | Required |
-|-------|-----------|---------|----------|
-| `cat` | ✓ | ✓ | Yes |
-| `sub-cat` | ✓ | ✓ | Yes |
-| `name` | ✓ | ✓ | Yes |
-| `first_img.svg` | ✓ | ✗ | Listening only |
-| `fl` | ✗ | ✓ | Reading only |
-| `keys` | ✓ | ✓ | Yes |
 
 ### Development
 ```bash
