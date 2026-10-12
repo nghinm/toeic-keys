@@ -9,7 +9,11 @@ function flTitles(row) {
 
 // State
 const cache = { listening: null, reading: null };
-const pending = { listening: null, reading: null };
+const loadMeta = {
+  listening: { inProgress: false, started: false, promise: null },
+  reading: { inProgress: false, started: false, promise: null },
+};
+const loadedUrls = { listening: new Set(), reading: new Set() };
 const prefixes = { listening: "l-", reading: "r-" };
 const svgCache = new WeakMap();
 const expandedItems = new Set();
@@ -164,105 +168,119 @@ async function setCachedData(key, data) {
   }
 }
 
-// Load data with IndexedDB cache (using manifest)
-async function loadKind(kind) {
-  if (!manifest) await loadManifest();
-  
-  // manifest[kind] is now: { "CategoryName": ["file1.json", "file2.json"], ... }
+function collectKindUrls(kind) {
   const categories = manifest[kind];
-  if (!categories || typeof categories !== 'object') throw new Error("Unknown kind: " + kind);
-  
-  // Load all files from all categories and merge
-  const allItems = [];
-  
+  if (!categories || typeof categories !== "object") return [];
+  const urls = [];
   for (const catName of Object.keys(categories)) {
-    const files = categories[catName];
-    for (const url of files) {
-      // Check IndexedDB cache first
-      let cached = await getCachedData(url);
-      
-      if (!cached || !Array.isArray(cached)) {
-        // Fetch fresh if no cache or expired
-        try {
-          const res = await fetch(url);
-          if (!res.ok) {
-            console.error(`❌ [${url}] HTTP ${res.status}`);
-            continue;
-          }
-          
-          const data = await res.json();
-          if (!Array.isArray(data)) {
-            console.error(`❌ [${url}] Not an array, got: ${typeof data}`);
-            continue;
-          }
-          
-          // Store in IndexedDB
-          await setCachedData(url, data);
-          cached = data;
-          console.log(`✓ [${url}] ${data.length} items`);
-        } catch (e) {
-          console.error(`❌ [${url}] ${e.name}: ${e.message}`);
-          continue;
-        }
-      } else {
-        console.log(`✓ [${url}] from cache`);
-      }
-      
-      // Add valid items only, skip invalid
-      cached.forEach((row, i) => {
-        if (!Array.isArray(row)) {
-          console.warn(`⚠️ [${url}:${i}] Invalid record, skipped`);
-          return;
-        }
-
-        if (kind === "listening") {
-          const img = row[R.EXTRA];
-          if (!img || !img.svg) {
-            console.warn(`⚠️ [${url}:${i}] Missing [3].svg, skipped (name: "${row[R.NAME] || "N/A"}")`);
-            return;
-          }
-        } else if (kind === "reading") {
-          if (!row[R.EXTRA]) {
-            console.warn(`⚠️ [${url}:${i}] Missing [3] fl, skipped (name: "${row[R.NAME] || "N/A"}")`);
-            return;
-          }
-          if (!Array.isArray(row[R.KEYS])) {
-            console.warn(`⚠️ [${url}:${i}] Missing [4] keys, skipped (name: "${row[R.NAME] || "N/A"}")`);
-            return;
-          }
-        }
-
-        allItems.push({ item: row, file: url, i, globalIndex: allItems.length });
-      });
-    }
+    for (const url of categories[catName]) urls.push(url);
   }
-  
-  return allItems;
+  return urls;
+}
+
+function wrapFileRecords(kind, url, records) {
+  const wrapped = [];
+  records.forEach((row, i) => {
+    if (!Array.isArray(row)) {
+      console.warn(`⚠️ [${url}:${i}] Invalid record, skipped`);
+      return;
+    }
+    if (kind === "listening") {
+      const img = row[R.EXTRA];
+      if (!img || !img.svg) {
+        console.warn(`⚠️ [${url}:${i}] Missing [3].svg, skipped (name: "${row[R.NAME] || "N/A"}")`);
+        return;
+      }
+    } else if (kind === "reading") {
+      if (!row[R.EXTRA]) {
+        console.warn(`⚠️ [${url}:${i}] Missing [3] fl, skipped (name: "${row[R.NAME] || "N/A"}")`);
+        return;
+      }
+      if (!Array.isArray(row[R.KEYS])) {
+        console.warn(`⚠️ [${url}:${i}] Missing [4] keys, skipped (name: "${row[R.NAME] || "N/A"}")`);
+        return;
+      }
+    }
+    wrapped.push({ item: row, file: url, i });
+  });
+  return wrapped;
+}
+
+function appendToCache(kind, rows) {
+  if (!cache[kind]) cache[kind] = [];
+  for (const row of rows) {
+    row.globalIndex = cache[kind].length;
+    cache[kind].push(row);
+  }
+}
+
+let uiUpdateQueued = false;
+function scheduleUIUpdate() {
+  if (uiUpdateQueued) return;
+  uiUpdateQueued = true;
+  requestAnimationFrame(() => {
+    uiUpdateQueued = false;
+    renderSidebar();
+    render();
+  });
+}
+
+async function fetchFileRecords(url) {
+  let cached = await getCachedData(url);
+  if (cached && Array.isArray(cached)) {
+    console.log(`✓ [${url}] from cache`);
+    return cached;
+  }
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  if (!Array.isArray(data)) throw new Error(`Not an array (${typeof data})`);
+  await setCachedData(url, data);
+  console.log(`✓ [${url}] ${data.length} items`);
+  return data;
+}
+
+async function loadOneFile(kind, url) {
+  if (loadedUrls[kind].has(url)) return;
+  try {
+    const records = await fetchFileRecords(url);
+    const wrapped = wrapFileRecords(kind, url, records);
+    appendToCache(kind, wrapped);
+    loadedUrls[kind].add(url);
+    scheduleUIUpdate();
+  } catch (e) {
+    console.error(`❌ [${url}] ${e.name || "Error"}: ${e.message}`);
+  }
+}
+
+async function loadKindParallel(kind) {
+  if (!manifest) await loadManifest();
+  const urls = collectKindUrls(kind);
+  if (!urls.length) {
+    if (!cache[kind]) cache[kind] = [];
+    return;
+  }
+  await Promise.all(urls.map((url) => loadOneFile(kind, url)));
 }
 
 function ensure(kind) {
-  if (cache[kind]) return Promise.resolve(cache[kind]);
-  if (pending[kind]) return pending[kind];
-  
-  pending[kind] = loadKind(kind).then(data => {
-    cache[kind] = data;
-    pending[kind] = null;
-    updateCounts();
-    renderSidebar();
-    return data;
-  }).catch(() => {
-    pending[kind] = null;
-    cache[kind] = [];
-    updateCounts();
-    renderSidebar();
-    return [];
-  });
-  
-  return pending[kind];
-}
+  if (loadMeta[kind].promise) return loadMeta[kind].promise;
 
-function updateCounts() {
-  // Count badges are no longer shown in UI
+  loadMeta[kind].started = true;
+  loadMeta[kind].inProgress = true;
+
+  loadMeta[kind].promise = loadKindParallel(kind)
+    .catch((e) => {
+      console.error(`❌ load ${kind}:`, e);
+      if (!cache[kind]) cache[kind] = [];
+    })
+    .finally(() => {
+      loadMeta[kind].inProgress = false;
+      loadMeta[kind].promise = null;
+      scheduleUIUpdate();
+    });
+
+  return loadMeta[kind].promise;
 }
 
 // Render functions
@@ -411,7 +429,7 @@ function renderReadingList(rows) {
     <div class="reading-list">
       ${sorted.map(row => {
         const titles = flTitles(row.item);
-        const isOpen = expandedItems.has(row.i);
+        const isOpen = expandedItems.has(row.globalIndex);
         let metaInfo;
         if (filterName && filterCat === row.item[R.CAT] && filterSubCat === row.item[R.SUB_CAT]) {
           metaInfo = "";
@@ -495,12 +513,12 @@ function render() {
       }
     }
 
-    if (!rows.length) {
+    if (!rows.length && loadMeta.listening.inProgress) {
       main.innerHTML = renderLoading();
-      if (!cache.listening) ensure("listening").then(render);
     } else {
       main.innerHTML = renderListeningCards(rows);
     }
+    if (!loadMeta.listening.started) ensure("listening");
   } else {
     let rows = cache.reading || [];
 
@@ -517,13 +535,13 @@ function render() {
       }
     }
 
-    if (!rows.length) {
+    if (!rows.length && loadMeta.reading.inProgress) {
       main.innerHTML = renderLoading();
-      if (!cache.reading) ensure("reading").then(render);
     } else {
       main.innerHTML = renderReadingList(rows);
       attachSearchListeners();
     }
+    if (!loadMeta.reading.started) ensure("reading");
   }
   updateBreadcrumb();
 }
@@ -827,7 +845,7 @@ function updateBreadcrumb() {
     if (filterName) {
       html += `<span class="breadcrumb-sep">›</span><span class="breadcrumb-current">${filterName}</span>`;
     }
-    breadcrumb.innerHTML = html;
+    breadcrumb.innerHTML = `<div class="breadcrumb-path">${html}</div>`;
     return;
   }
 
@@ -863,8 +881,7 @@ function updateBreadcrumb() {
     html = `<span class="breadcrumb-current">${kindLabel(k)}</span>`;
   }
 
-  html += `<span class="breadcrumb-spacer"></span>${countHtml}`;
-  breadcrumb.innerHTML = html;
+  breadcrumb.innerHTML = `<div class="breadcrumb-path">${html}</div>${countHtml}`;
 }
 
 window.clearFilter = function() {
@@ -888,8 +905,8 @@ function attachSearchListeners() {
     searchQuery = si.value.trim();
     sb.classList.toggle("has-value", searchQuery.length > 0);
     sc.style.display = searchQuery ? "block" : "none";
-    if (searchQuery && !cache.reading) {
-      ensure("reading").then(render);
+    if (searchQuery && !loadMeta.reading.started) {
+      ensure("reading");
     } else {
       render();
     }
