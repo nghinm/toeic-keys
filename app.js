@@ -7,6 +7,33 @@ function flTitles(row) {
   return Array.isArray(fl) ? fl : [fl];
 }
 
+function escapeAttr(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;");
+}
+
+function captureSearchFocus() {
+  const el = document.getElementById("searchInput");
+  if (!el || document.activeElement !== el) return null;
+  return { start: el.selectionStart, end: el.selectionEnd, value: el.value };
+}
+
+function restoreSearchFocus(state) {
+  if (!state) return;
+  searchQuery = state.value;
+  const el = document.getElementById("searchInput");
+  if (!el) return;
+  if (el.value !== state.value) el.value = state.value;
+  el.focus();
+  try {
+    el.setSelectionRange(state.start, state.end);
+  } catch {
+    /* input types that ignore selection */
+  }
+}
+
 // State
 const cache = { listening: null, reading: null };
 const loadMeta = {
@@ -20,6 +47,7 @@ const expandedItems = new Set();
 
 let currentTab = "listening";
 let sortDir = 1;
+let readingAllExpanded = false;
 let searchQuery = "";
 let currentDetail = null;
 
@@ -35,10 +63,6 @@ let githubMetaFetchStarted = false;
 
 // Elements
 const main = document.getElementById("main");
-const searchInput = document.getElementById("searchInput");
-const searchBox = document.getElementById("searchBox");
-const searchContainer = document.getElementById("searchContainer");
-const searchClear = document.getElementById("searchClear");
 const themeBtn = document.getElementById("themeBtn");
 const themeIcon = document.getElementById("themeIcon");
 const scrollTopBtn = document.getElementById("scrollTop");
@@ -220,8 +244,19 @@ function scheduleUIUpdate() {
   uiUpdateQueued = true;
   requestAnimationFrame(() => {
     uiUpdateQueued = false;
+    const searchFocus = captureSearchFocus();
     renderSidebar();
-    render();
+    if (
+      searchFocus &&
+      currentTab === "reading" &&
+      !currentDetail &&
+      main.querySelector(".reading-list")
+    ) {
+      refreshReadingListOnly();
+      restoreSearchFocus(searchFocus);
+    } else {
+      render();
+    }
   });
 }
 
@@ -388,6 +423,130 @@ function renderListeningCards(rows) {
   `;
 }
 
+function getReadingRowsForView() {
+  let rows = cache.reading || [];
+  if (filterKind === "reading") {
+    if (filterCat) {
+      rows = rows.filter(r => r.item[R.CAT] === filterCat);
+      if (filterSubCat) {
+        rows = rows.filter(r => r.item[R.SUB_CAT] === filterSubCat);
+        if (filterName) {
+          rows = rows.filter(r => r.item[R.NAME] === filterName);
+        }
+      }
+    }
+  }
+  return rows;
+}
+
+function sortAndFilterReadingRows(rows) {
+  let sorted = [...rows].sort((a, b) =>
+    sortDir * (flTitles(a.item)[0] || "").localeCompare(flTitles(b.item)[0] || "", "en", { numeric: true })
+  );
+  const q = searchQuery.trim().toLowerCase();
+  if (q) {
+    sorted = sorted.filter(row => {
+      const titles = flTitles(row.item);
+      const keys = row.item[R.KEYS] || [];
+      return titles.some(t => t.toLowerCase().includes(q)) ||
+             keys.some(k => k.toLowerCase().includes(q));
+    });
+  }
+  return sorted;
+}
+
+function readingListItemsHtml(sorted) {
+  return sorted.map(row => {
+    const titles = flTitles(row.item);
+    const isOpen = expandedItems.has(row.globalIndex);
+    let metaInfo;
+    if (filterName && filterCat === row.item[R.CAT] && filterSubCat === row.item[R.SUB_CAT]) {
+      metaInfo = "";
+    } else if (filterSubCat && filterCat === row.item[R.CAT]) {
+      metaInfo = row.item[R.NAME] || "";
+    } else if (filterCat) {
+      metaInfo = `${row.item[R.SUB_CAT] || ""} • ${row.item[R.NAME] || ""}`;
+    } else {
+      metaInfo = `${row.item[R.CAT] || ""} • ${row.item[R.SUB_CAT] || ""} • ${row.item[R.NAME] || ""}`;
+    }
+    return `
+      <div class="reading-item ${isOpen ? "expanded" : ""}" data-index="${row.globalIndex}">
+        <div class="reading-main">
+          <button class="reading-header" onclick="toggleReading(${row.globalIndex})">
+            <div class="reading-expand">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+            <div class="reading-title">${titles[0] || "Untitled"}</div>
+          </button>
+          <div class="reading-meta">
+            <span class="reading-meta-text">${metaInfo}</span>
+          </div>
+        </div>
+        <div class="reading-body">
+          ${titles.slice(1).map(t => `<div class="reading-extra">${t}</div>`).join("")}
+          <div class="reading-answers" style="margin-top: 12px;">
+            ${(row.item[R.KEYS] || []).map((k, i) => `
+              <div class="answer-chip">${i + 1}. ${k}</div>
+            `).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function updateReadingSearchChrome() {
+  const sb = document.getElementById("searchBox");
+  const sc = document.getElementById("searchClear");
+  if (sb) sb.classList.toggle("has-value", searchQuery.length > 0);
+  if (sc) sc.style.display = searchQuery ? "block" : "none";
+}
+
+function refreshReadingListOnly() {
+  const listEl = main.querySelector(".reading-list");
+  if (!listEl || currentTab !== "reading" || currentDetail) return;
+  const sorted = sortAndFilterReadingRows(getReadingRowsForView());
+  listEl.innerHTML = readingListItemsHtml(sorted);
+  updateBreadcrumb();
+  syncReadingExpandToggleBtn();
+}
+
+function expandAllVisibleReading() {
+  sortAndFilterReadingRows(getReadingRowsForView()).forEach((row) => {
+    expandedItems.add(row.globalIndex);
+  });
+  refreshReadingListOnly();
+}
+
+function collapseAllVisibleReading() {
+  sortAndFilterReadingRows(getReadingRowsForView()).forEach((row) => {
+    expandedItems.delete(row.globalIndex);
+  });
+  refreshReadingListOnly();
+}
+
+function syncReadingExpandToggleBtn() {
+  const btn = document.getElementById("readingExpandToggle");
+  if (!btn) return;
+  const label = btn.querySelector(".sort-btn-text");
+  if (label) label.textContent = readingAllExpanded ? "Collapse" : "Expand";
+  btn.classList.toggle("active", readingAllExpanded);
+  btn.setAttribute("aria-label", readingAllExpanded ? "Collapse all passages" : "Expand all passages");
+}
+
+function toggleReadingExpandAll() {
+  if (readingAllExpanded) {
+    collapseAllVisibleReading();
+    readingAllExpanded = false;
+  } else {
+    expandAllVisibleReading();
+    readingAllExpanded = true;
+  }
+  syncReadingExpandToggleBtn();
+}
+
 function renderReadingList(rows) {
   if (!rows.length) {
     return `
@@ -400,21 +559,9 @@ function renderReadingList(rows) {
       </div>
     `;
   }
-  
-  let sorted = [...rows].sort((a, b) =>
-    sortDir * (flTitles(a.item)[0] || "").localeCompare(flTitles(b.item)[0] || "", "en", { numeric: true })
-  );
 
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    sorted = sorted.filter(row => {
-      const titles = flTitles(row.item);
-      const keys = row.item[R.KEYS] || [];
-      return titles.some(t => t.toLowerCase().includes(q)) ||
-             keys.some(k => k.toLowerCase().includes(q));
-    });
-  }
-  
+  const sorted = sortAndFilterReadingRows(rows);
+
   return `
     <div class="reading-search">
       <div class="search-box" id="searchBox">
@@ -422,50 +569,15 @@ function renderReadingList(rows) {
           <circle cx="11" cy="11" r="8"/>
           <path d="M21 21l-4.35-4.35"/>
         </svg>
-        <input type="text" id="searchInput" placeholder="Search by title or answers…" autocomplete="off" value="${searchQuery}">
-        <button class="search-clear" id="searchClear" style="${searchQuery ? "" : "display:none"}">✕</button>
+        <input type="text" id="searchInput" placeholder="Search by title or answers…" autocomplete="off" value="${escapeAttr(searchQuery)}">
+        <button type="button" class="search-clear" id="searchClear" style="${searchQuery ? "" : "display:none"}">✕</button>
       </div>
+      <button type="button" class="sort-btn reading-expand-toggle" id="readingExpandToggle" aria-label="Expand all passages">
+        <span class="sort-btn-text">Expand</span>
+      </button>
     </div>
     <div class="reading-list">
-      ${sorted.map(row => {
-        const titles = flTitles(row.item);
-        const isOpen = expandedItems.has(row.globalIndex);
-        let metaInfo;
-        if (filterName && filterCat === row.item[R.CAT] && filterSubCat === row.item[R.SUB_CAT]) {
-          metaInfo = "";
-        } else if (filterSubCat && filterCat === row.item[R.CAT]) {
-          metaInfo = row.item[R.NAME] || "";
-        } else if (filterCat) {
-          metaInfo = `${row.item[R.SUB_CAT] || ""} • ${row.item[R.NAME] || ""}`;
-        } else {
-          metaInfo = `${row.item[R.CAT] || ""} • ${row.item[R.SUB_CAT] || ""} • ${row.item[R.NAME] || ""}`;
-        }
-        return `
-          <div class="reading-item ${isOpen ? "expanded" : ""}" data-index="${row.globalIndex}">
-            <div class="reading-main">
-              <button class="reading-header" onclick="toggleReading(${row.globalIndex})">
-                <div class="reading-expand">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-                    <path d="M9 18l6-6-6-6"/>
-                  </svg>
-                </div>
-                <div class="reading-title">${titles[0] || "Untitled"}</div>
-              </button>
-              <div class="reading-meta">
-                <span class="reading-meta-text">${metaInfo}</span>
-              </div>
-            </div>
-            <div class="reading-body">
-              ${titles.slice(1).map(t => `<div class="reading-extra">${t}</div>`).join("")}
-              <div class="reading-answers" style="margin-top: 12px;">
-                ${(row.item[R.KEYS] || []).map((k, i) => `
-                  <div class="answer-chip">${i + 1}. ${k}</div>
-                `).join("")}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("")}
+      ${readingListItemsHtml(sorted)}
     </div>
   `;
 }
@@ -488,6 +600,9 @@ function renderDetail(item) {
 }
 
 function render() {
+  const searchFocus = captureSearchFocus();
+  if (searchFocus) searchQuery = searchFocus.value;
+
   if (searchQuery && currentTab === "listening") {
     currentTab = "reading";
   }
@@ -520,30 +635,18 @@ function render() {
     }
     if (!loadMeta.listening.started) ensure("listening");
   } else {
-    let rows = cache.reading || [];
-
-    // Apply filters
-    if (filterKind === "reading") {
-      if (filterCat) {
-        rows = rows.filter(r => r.item[R.CAT] === filterCat);
-        if (filterSubCat) {
-          rows = rows.filter(r => r.item[R.SUB_CAT] === filterSubCat);
-          if (filterName) {
-            rows = rows.filter(r => r.item[R.NAME] === filterName);
-          }
-        }
-      }
-    }
+    const rows = getReadingRowsForView();
 
     if (!rows.length && loadMeta.reading.inProgress) {
       main.innerHTML = renderLoading();
     } else {
       main.innerHTML = renderReadingList(rows);
-      attachSearchListeners();
     }
     if (!loadMeta.reading.started) ensure("reading");
   }
   updateBreadcrumb();
+  restoreSearchFocus(searchFocus);
+  syncReadingExpandToggleBtn();
 }
 
 // Actions
@@ -804,8 +907,8 @@ function updateBreadcrumb() {
           }
         }
       }
-      if (searchQuery) {
-        const q = searchQuery.toLowerCase();
+      const q = searchQuery.trim().toLowerCase();
+      if (q) {
         rows = rows.filter(row => {
           const titles = flTitles(row.item);
           const keys = row.item[R.KEYS] || [];
@@ -893,34 +996,27 @@ window.clearFilter = function() {
   render();
 };
 
-// Search - attach after render since elements are dynamic
-function attachSearchListeners() {
+main.addEventListener("input", (e) => {
+  if (e.target.id !== "searchInput") return;
+  searchQuery = e.target.value;
+  updateReadingSearchChrome();
+  if (searchQuery.trim() && !loadMeta.reading.started) ensure("reading");
+  refreshReadingListOnly();
+});
+
+main.addEventListener("click", (e) => {
+  if (e.target.closest("#readingExpandToggle")) {
+    toggleReadingExpandAll();
+    return;
+  }
+  if (e.target.id !== "searchClear" && !e.target.closest("#searchClear")) return;
+  searchQuery = "";
   const si = document.getElementById("searchInput");
-  const sb = document.getElementById("searchBox");
-  const sc = document.getElementById("searchClear");
-  
-  if (!si || !sb || !sc) return;
-  
-  si.addEventListener("input", () => {
-    searchQuery = si.value.trim();
-    sb.classList.toggle("has-value", searchQuery.length > 0);
-    sc.style.display = searchQuery ? "block" : "none";
-    if (searchQuery && !loadMeta.reading.started) {
-      ensure("reading");
-    } else {
-      render();
-    }
-  });
-  
-  sc.addEventListener("click", () => {
-    si.value = "";
-    searchQuery = "";
-    sb.classList.remove("has-value");
-    sc.style.display = "none";
-    render();
-    si.focus();
-  });
-}
+  if (si) si.value = "";
+  updateReadingSearchChrome();
+  refreshReadingListOnly();
+  si?.focus();
+});
 
 // Menu button - toggle sidebar on mobile
 if (menuBtn) {
@@ -934,7 +1030,7 @@ renderSidebar();
 document.addEventListener("keydown", e => {
   if (e.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
     e.preventDefault();
-    searchInput.focus();
+    document.getElementById("searchInput")?.focus();
   }
 });
 

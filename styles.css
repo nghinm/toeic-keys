@@ -713,6 +713,9 @@
   
   /* Reading Search Inline */
   .reading-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     position: sticky;
     top: 52px;
     z-index: 10;
@@ -724,6 +727,8 @@
   }
 
   .reading-search .search-box {
+    flex: 1;
+    min-width: 0;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -775,6 +780,11 @@
   .reading-search .search-clear:hover {
     background: var(--text-3);
     color: var(--text);
+  }
+
+  .reading-expand-toggle {
+    flex-shrink: 0;
+    padding: 8px 12px;
   }
   
   /* Reading List */
