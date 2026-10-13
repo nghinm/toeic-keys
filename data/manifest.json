@@ -7,6 +7,11 @@
   "reading": {
     "HACKER": [
       "data/reading/r-hacker-keys.json"
+    ],
+    "YBM": [
+      "data/reading/r-ybm-vol-1.json",
+      "data/reading/r-ybm-vol-2.json",
+      "data/reading/r-ybm-vol-3.json"
     ]
   }
 }
