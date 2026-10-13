@@ -7,6 +7,32 @@ function flTitles(row) {
   return Array.isArray(fl) ? fl : [fl];
 }
 
+function flMatchesSearch(row, q) {
+  return flTitles(row).some((t) => String(t).toLowerCase().includes(q));
+}
+
+function compareSortKey(a, b) {
+  return String(a).localeCompare(String(b), "en", { numeric: true, sensitivity: "base" });
+}
+
+function countTestsAndPassages(rows) {
+  const tests = new Set();
+  for (const r of rows) {
+    tests.add(`${r.item[R.CAT]}\x01${r.item[R.SUB_CAT]}\x01${r.item[R.NAME]}`);
+  }
+  return { tests: tests.size, passages: rows.length };
+}
+
+function formatReadingCount(rows) {
+  const { tests, passages } = countTestsAndPassages(rows);
+  return `${tests}(${passages})`;
+}
+
+function formatReadingBreadcrumbCount(rows) {
+  const { tests, passages } = countTestsAndPassages(rows);
+  return `${tests} tests (${passages} passages)`;
+}
+
 function escapeAttr(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -445,12 +471,7 @@ function sortAndFilterReadingRows(rows) {
   );
   const q = searchQuery.trim().toLowerCase();
   if (q) {
-    sorted = sorted.filter(row => {
-      const titles = flTitles(row.item);
-      const keys = row.item[R.KEYS] || [];
-      return titles.some(t => t.toLowerCase().includes(q)) ||
-             keys.some(k => k.toLowerCase().includes(q));
-    });
+    sorted = sorted.filter(row => flMatchesSearch(row.item, q));
   }
   return sorted;
 }
@@ -569,7 +590,7 @@ function renderReadingList(rows) {
           <circle cx="11" cy="11" r="8"/>
           <path d="M21 21l-4.35-4.35"/>
         </svg>
-        <input type="text" id="searchInput" placeholder="Search by title or answers…" autocomplete="off" value="${escapeAttr(searchQuery)}">
+        <input type="text" id="searchInput" placeholder="Search passage titles…" autocomplete="off" value="${escapeAttr(searchQuery)}">
         <button type="button" class="search-clear" id="searchClear" style="${searchQuery ? "" : "display:none"}">✕</button>
       </div>
       <button type="button" class="sort-btn reading-expand-toggle" id="readingExpandToggle" aria-label="Expand all passages">
@@ -759,7 +780,7 @@ function renderSidebar() {
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
               </svg>
               <span>Reading</span>
-              <span class="tree-count">${readingData.length}</span>
+              <span class="tree-count">${formatReadingCount(readingData)}</span>
             </button>
           </div>
           <div class="tree-children">
@@ -777,9 +798,11 @@ function renderSidebar() {
 
 function renderTreeCatGroup(kind, catGroup, allData) {
   const catName = catGroup.key;
-  const subCatGroups = groupBySubCat(allData.filter(r => r.item[R.CAT] === catName));
+  const catRows = allData.filter(r => r.item[R.CAT] === catName);
+  const subCatGroups = groupBySubCat(catRows);
   const isActive = filterKind === kind && filterCat === catName;
-  
+  const catCountLabel = kind === "reading" ? formatReadingCount(catRows) : catRows.length;
+
   return `
     <div class="tree-folder tree-sub ${isActive ? 'open' : ''}" data-type="${kind}" data-cat="${catName}">
       <div class="tree-folder-header">
@@ -788,11 +811,14 @@ function renderTreeCatGroup(kind, catGroup, allData) {
         </button>
         <button class="tree-label-btn" onclick="setFilter('${kind}', '${catName}', null, null)">
           <span>${catName}</span>
-          <span class="tree-count">${catGroup.count}</span>
+          <span class="tree-count">${catCountLabel}</span>
         </button>
       </div>
       <div class="tree-children">
-        ${subCatGroups.map(sg => `
+        ${subCatGroups.map(sg => {
+          const subRows = catRows.filter(r => (r.item[R.SUB_CAT] || "Other") === sg.key);
+          const subCountLabel = kind === "reading" ? formatReadingCount(subRows) : subRows.length;
+          return `
           <div class="tree-folder tree-test ${filterKind === kind && filterCat === catName && filterSubCat === sg.key ? 'open' : ''}" data-type="${kind}" data-cat="${catName}" data-subcat="${sg.key}">
             <div class="tree-folder-header">
               <button class="tree-arrow-btn" onclick="toggleTreeFolder(this)">
@@ -800,7 +826,7 @@ function renderTreeCatGroup(kind, catGroup, allData) {
               </button>
               <button class="tree-label-btn" onclick="setFilter('${kind}', '${catName}', '${sg.key}', null);">
                 <span>${sg.key}</span>
-                <span class="tree-count">${sg.count}</span>
+                <span class="tree-count">${subCountLabel}</span>
               </button>
             </div>
             <div class="tree-children">
@@ -812,7 +838,8 @@ function renderTreeCatGroup(kind, catGroup, allData) {
               `).join("")}
             </div>
           </div>
-        `).join("")}
+        `;
+        }).join("")}
       </div>
     </div>
   `;
@@ -842,7 +869,7 @@ function groupBy(rows, idx) {
     if (!map.has(k)) map.set(k, { key: k, count: 0 });
     map.get(k).count++;
   });
-  return [...map.values()].sort((a, b) => b.count - a.count);
+  return [...map.values()].sort((a, b) => compareSortKey(a.key, b.key));
 }
 
 function groupBySubCat(rows) {
@@ -856,7 +883,12 @@ function groupBySubCat(rows) {
       map.get(k).tests.push(testName);
     }
   });
-  return [...map.values()].sort((a, b) => a.key.localeCompare(b.key));
+  return [...map.values()]
+    .map((g) => {
+      g.tests.sort(compareSortKey);
+      return g;
+    })
+    .sort((a, b) => compareSortKey(a.key, b.key));
 }
 
 window.selectTab = function(tab) {
@@ -909,19 +941,15 @@ function updateBreadcrumb() {
       }
       const q = searchQuery.trim().toLowerCase();
       if (q) {
-        rows = rows.filter(row => {
-          const titles = flTitles(row.item);
-          const keys = row.item[R.KEYS] || [];
-          return titles.some(t => t.toLowerCase().includes(q)) ||
-                 keys.some(k => k.toLowerCase().includes(q));
-        });
+        rows = rows.filter(row => flMatchesSearch(row.item, q));
       }
-      return rows.length;
+      return formatReadingBreadcrumbCount(rows);
     }
   };
 
-  const unit = currentTab === "listening" ? "tests" : "passages";
-  const countHtml = `<span class="breadcrumb-count">${getCount()} ${unit}</span>`;
+  const countHtml = currentTab === "reading"
+    ? `<span class="breadcrumb-count">${getCount()}</span>`
+    : `<span class="breadcrumb-count">${getCount()} tests</span>`;
 
   // Detail view - show item info with filter context (only for listening)
   if (currentDetail && currentTab === "listening") {
