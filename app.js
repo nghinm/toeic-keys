@@ -40,6 +40,113 @@ function escapeAttr(value) {
     .replace(/</g, "&lt;");
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function isCompactDensity() {
+  return densityMode === "compact";
+}
+
+function setDensity(mode) {
+  densityMode = mode;
+  localStorage.setItem("density", mode);
+  document.documentElement.setAttribute("data-density", mode);
+  syncDensityBtn();
+  render();
+}
+
+const ICON_DENSITY_COMFY = `<rect x="8.5" y="8.5" width="7" height="7" rx="1.5"/><path d="M12 3v3M9.5 5.5L12 3l2.5 2.5M12 21v-3M9.5 18.5L12 21l2.5-2.5M3 12h3M5.5 9.5L3 12l2.5 2.5M21 12h-3M18.5 9.5L21 12l-2.5 2.5"/>`;
+const ICON_DENSITY_COMPACT = `<rect x="8.5" y="8.5" width="7" height="7" rx="1.5"/><path d="M12 3v3M10.5 4.5L12 7l1.5-2.5M12 21v-3M10.5 19.5L12 17l1.5 2.5M3 12h3M4.5 10.5L7 12l-2.5 1.5M21 12h-3M19.5 10.5L17 12l2.5 1.5"/>`;
+
+function syncDensityBtn() {
+  const btn = document.getElementById("densityBtn");
+  const icon = document.getElementById("densityIcon");
+  if (!btn || !icon) return;
+  const compact = isCompactDensity();
+  btn.classList.toggle("active", compact);
+  btn.setAttribute("aria-label", compact ? "Switch to comfy layout" : "Switch to compact layout");
+  icon.innerHTML = compact ? ICON_DENSITY_COMPACT : ICON_DENSITY_COMFY;
+}
+
+function getSvgMeta(item) {
+  if (svgMetaCache.has(item)) return svgMetaCache.get(item);
+  const svg = item[R.EXTRA]?.svg;
+  let w = 3;
+  let h = 4;
+  if (svg) {
+    const viewBox = svg.match(/viewBox=["']([^"']+)["']/i);
+    if (viewBox) {
+      const p = viewBox[1].trim().split(/[\s,]+/).map(Number);
+      if (p.length >= 4 && p[2] > 0 && p[3] > 0) {
+        w = p[2];
+        h = p[3];
+      }
+    } else {
+      const wm = svg.match(/\bwidth=["']([^"']+)["']/i);
+      const hm = svg.match(/\bheight=["']([^"']+)["']/i);
+      const wn = wm ? parseFloat(wm[1]) : NaN;
+      const hn = hm ? parseFloat(hm[1]) : NaN;
+      if (Number.isFinite(wn) && Number.isFinite(hn) && wn > 0 && hn > 0) {
+        w = wn;
+        h = hn;
+      }
+    }
+  }
+  const meta = { w, h, orient: h > w ? "portrait" : "landscape" };
+  svgMetaCache.set(item, meta);
+  return meta;
+}
+
+function getItemOrientation(item) {
+  return getSvgMeta(item).orient;
+}
+
+function filterListeningOrientation(rows) {
+  if (listeningOrientFilter === "all") return rows;
+  return rows.filter((r) => getItemOrientation(r.item) === listeningOrientFilter);
+}
+
+const ORIENT_ICON_SVG = {
+  portrait: `<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="7.5" y="3" width="9" height="18" rx="2.5" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="2"/></svg>`,
+  landscape: `<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7.5" width="18" height="9" rx="2.5" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="2"/></svg>`,
+  all: `<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="4" width="8.5" height="15" rx="2.5" fill="currentColor" fill-opacity="0.14" stroke="currentColor" stroke-width="2"/><rect x="10" y="8.5" width="11" height="9" rx="2.5" fill="var(--surface)" stroke="currentColor" stroke-width="2"/></svg>`,
+};
+
+function listeningOrientFilterIcon() {
+  if (listeningOrientFilter === "portrait") return ORIENT_ICON_SVG.portrait;
+  if (listeningOrientFilter === "landscape") return ORIENT_ICON_SVG.landscape;
+  return ORIENT_ICON_SVG.all;
+}
+
+function listeningOrientFilterLabel() {
+  if (listeningOrientFilter === "portrait") return "Filter: portrait images";
+  if (listeningOrientFilter === "landscape") return "Filter: landscape images";
+  return "Filter: all orientations";
+}
+
+function cycleListeningOrientFilter() {
+  const order = ["all", "portrait", "landscape"];
+  listeningOrientFilter = order[(order.indexOf(listeningOrientFilter) + 1) % order.length];
+  render();
+}
+
+function renderListeningToolbar() {
+  return `
+    <div class="list-toolbar listening-toolbar">
+      <div class="listening-filter-group">
+        <span class="list-toolbar-label">Filter by:</span>
+        <button type="button" class="sort-btn icon-only listening-orient-btn" id="listeningOrientFilter" aria-label="${listeningOrientFilterLabel()}" title="${listeningOrientFilterLabel()}">
+          ${listeningOrientFilterIcon()}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
 function captureSearchFocus() {
   const el = document.getElementById("searchInput");
   if (!el || document.activeElement !== el) return null;
@@ -67,7 +174,6 @@ const loadMeta = {
   reading: { inProgress: false, started: false, promise: null },
 };
 const loadedUrls = { listening: new Set(), reading: new Set() };
-const prefixes = { listening: "l-", reading: "r-" };
 const svgCache = new WeakMap();
 const expandedItems = new Set();
 
@@ -75,6 +181,15 @@ let currentTab = "listening";
 let sortDir = 1;
 let readingAllExpanded = false;
 let searchQuery = "";
+/** @type {"comfy"|"compact"} */
+let densityMode = localStorage.getItem("density") === "compact" ? "compact" : "comfy";
+/** @type {"all"|"portrait"|"landscape"} */
+let listeningOrientFilter = "all";
+
+const svgMetaCache = new WeakMap();
+
+const ICON_EXPAND_ALL = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l4-4 4 4"/><path d="M8 15l4 4 4-4"/></svg>`;
+const ICON_COLLAPSE_ALL = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 6l-5 4-5-4"/><path d="M7 18l5-4 5 4"/></svg>`;
 let currentDetail = null;
 
 // Filter state for tree navigation
@@ -92,11 +207,8 @@ const main = document.getElementById("main");
 const themeBtn = document.getElementById("themeBtn");
 const themeIcon = document.getElementById("themeIcon");
 const scrollTopBtn = document.getElementById("scrollTop");
-const toast = document.getElementById("toast");
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
-const listeningCount = document.getElementById("listeningCount");
-const readingCount = document.getElementById("readingCount");
 
 // Mobile sidebar state
 let sidebarOpen = false;
@@ -345,22 +457,6 @@ function ensure(kind) {
 }
 
 // Render functions
-function renderWelcome() {
-  return `
-    <div class="welcome">
-      <div class="welcome-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-          <path d="M12 6v7M9 10l3-3 3 3"/>
-        </svg>
-      </div>
-      <h1>Welcome to TOEIC Keys</h1>
-      <p>Select Listening or Reading above to browse answer keys</p>
-    </div>
-  `;
-}
-
 function renderLoading() {
   return `
     <div class="welcome">
@@ -400,6 +496,7 @@ function getSvg(row) {
 function renderListeningCards(rows) {
   if (!rows.length) {
     return `
+      ${renderListeningToolbar()}
       <div class="empty-state">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
@@ -414,9 +511,14 @@ function renderListeningCards(rows) {
   const sorted = [...rows].sort((a, b) =>
     sortDir * (a.item[R.NAME] || "").localeCompare(b.item[R.NAME] || "", "en", { numeric: true })
   );
+
+  const compact = isCompactDensity();
+  const fitGrid = compact || listeningOrientFilter !== "all";
+  const gridClass = fitGrid ? "cards-grid cards-grid--fit" : "cards-grid cards-grid--uniform";
   
   return `
-    <div class="cards-grid">
+    ${renderListeningToolbar()}
+    <div class="${gridClass}">
       ${sorted.map(row => {
         // Skip items without valid SVG
         const svgEl = getSvg(row.item);
@@ -433,8 +535,20 @@ function renderListeningCards(rows) {
         } else {
           cardMeta = `${row.item[R.CAT] || ""} • ${row.item[R.SUB_CAT] || ""} • ${row.item[R.NAME] || ""}`;
         }
+        const { w, h } = getSvgMeta(row.item);
+        const landscape = w >= h;
+        let cardStyle = "";
+        if (fitGrid) {
+          let cardW;
+          if (compact) {
+            cardW = landscape ? "min(33.333vw, 280px)" : "min(25vw, 200px)";
+          } else {
+            cardW = landscape ? "min(44vw, 260px)" : "min(40vw, 196px)";
+          }
+          cardStyle = ` style="--card-ar: ${w} / ${h}; --card-w: ${cardW};"`;
+        }
         return `
-        <button class="card" data-index="${row.globalIndex}" onclick="openListening(${row.globalIndex})">
+        <button class="card" data-index="${row.globalIndex}" data-orient="${landscape ? "landscape" : "portrait"}"${cardStyle} onclick="openListening(${row.globalIndex})">
           <div class="card-thumb">
             ${svgEl.outerHTML}
           </div>
@@ -476,10 +590,20 @@ function sortAndFilterReadingRows(rows) {
   return sorted;
 }
 
+function readingTitlesHtml(titles) {
+  const comfy = !isCompactDensity();
+  const visible = comfy ? titles : titles.slice(0, 1);
+  if (!visible.length) {
+    return `<div class="reading-titles"><div class="reading-title-line">Untitled</div></div>`;
+  }
+  return `<div class="reading-titles">${visible.map((t) => `<div class="reading-title-line">${escapeHtml(t)}</div>`).join("")}</div>`;
+}
+
 function readingListItemsHtml(sorted) {
   return sorted.map(row => {
     const titles = flTitles(row.item);
     const isOpen = expandedItems.has(row.globalIndex);
+    const bodyExtraTitles = isCompactDensity() ? titles.slice(1) : [];
     let metaInfo;
     if (filterName && filterCat === row.item[R.CAT] && filterSubCat === row.item[R.SUB_CAT]) {
       metaInfo = "";
@@ -499,17 +623,17 @@ function readingListItemsHtml(sorted) {
                 <path d="M9 18l6-6-6-6"/>
               </svg>
             </div>
-            <div class="reading-title">${titles[0] || "Untitled"}</div>
+            ${readingTitlesHtml(titles)}
           </button>
           <div class="reading-meta">
             <span class="reading-meta-text">${metaInfo}</span>
           </div>
         </div>
         <div class="reading-body">
-          ${titles.slice(1).map(t => `<div class="reading-extra">${t}</div>`).join("")}
-          <div class="reading-answers" style="margin-top: 12px;">
+          ${bodyExtraTitles.map(t => `<div class="reading-extra">${escapeHtml(t)}</div>`).join("")}
+          <div class="reading-answers">
             ${(row.item[R.KEYS] || []).map((k, i) => `
-              <div class="answer-chip">${i + 1}. ${k}</div>
+              <div class="answer-chip">${i + 1}. ${escapeHtml(k)}</div>
             `).join("")}
           </div>
         </div>
@@ -551,8 +675,7 @@ function collapseAllVisibleReading() {
 function syncReadingExpandToggleBtn() {
   const btn = document.getElementById("readingExpandToggle");
   if (!btn) return;
-  const label = btn.querySelector(".sort-btn-text");
-  if (label) label.textContent = readingAllExpanded ? "Collapse" : "Expand";
+  btn.innerHTML = readingAllExpanded ? ICON_COLLAPSE_ALL : ICON_EXPAND_ALL;
   btn.classList.toggle("active", readingAllExpanded);
   btn.setAttribute("aria-label", readingAllExpanded ? "Collapse all passages" : "Expand all passages");
 }
@@ -584,7 +707,7 @@ function renderReadingList(rows) {
   const sorted = sortAndFilterReadingRows(rows);
 
   return `
-    <div class="reading-search">
+    <div class="list-toolbar reading-search">
       <div class="search-box" id="searchBox">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <circle cx="11" cy="11" r="8"/>
@@ -593,8 +716,8 @@ function renderReadingList(rows) {
         <input type="text" id="searchInput" placeholder="Search passage titles…" autocomplete="off" value="${escapeAttr(searchQuery)}">
         <button type="button" class="search-clear" id="searchClear" style="${searchQuery ? "" : "display:none"}">✕</button>
       </div>
-      <button type="button" class="sort-btn reading-expand-toggle" id="readingExpandToggle" aria-label="Expand all passages">
-        <span class="sort-btn-text">Expand</span>
+      <button type="button" class="sort-btn icon-only reading-expand-toggle" id="readingExpandToggle" aria-label="Expand all passages">
+        ${ICON_EXPAND_ALL}
       </button>
     </div>
     <div class="reading-list">
@@ -649,6 +772,8 @@ function render() {
       }
     }
 
+    rows = filterListeningOrientation(rows);
+
     if (!rows.length && loadMeta.listening.inProgress) {
       main.innerHTML = renderLoading();
     } else {
@@ -696,27 +821,6 @@ window.toggleReading = function(index) {
   if (el) {
     el.classList.toggle("expanded", expandedItems.has(index));
   }
-};
-
-window.openReading = function(index) {
-  const rows = cache.reading;
-  if (!rows || !rows[index]) return;
-  const item = rows[index].item;
-  filterKind = "reading";
-  filterCat = item[R.CAT];
-  filterSubCat = item[R.SUB_CAT] || null;
-  filterName = item[R.NAME] || null;
-  expandedItems.delete(index);
-  // Toggle expand/collapse instead of showing detail view
-  if (expandedItems.has(index)) {
-    expandedItems.delete(index);
-  } else {
-    expandedItems.add(index);
-  }
-  render();
-  renderSidebar();
-  updateBreadcrumb();
-  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 window.backToList = function() {
@@ -891,19 +995,6 @@ function groupBySubCat(rows) {
     .sort((a, b) => compareSortKey(a.key, b.key));
 }
 
-window.selectTab = function(tab) {
-  // Reset filter to match the selected tab
-  filterKind = tab === "listening" ? "listening" : "reading";
-  filterCat = null;
-  filterSubCat = null;
-  filterName = null;
-  currentTab = tab;
-  currentDetail = null;
-  render();
-  updateBreadcrumb();
-  renderSidebar();
-};
-
 // Breadcrumb
 const breadcrumb = document.getElementById("breadcrumb");
 
@@ -927,7 +1018,7 @@ function updateBreadcrumb() {
           }
         }
       }
-      return rows.length;
+      return filterListeningOrientation(rows).length;
     } else {
       let rows = cache.reading || [];
       if (filterKind === "reading") {
@@ -1037,6 +1128,10 @@ main.addEventListener("click", (e) => {
     toggleReadingExpandAll();
     return;
   }
+  if (e.target.closest("#listeningOrientFilter")) {
+    cycleListeningOrientFilter();
+    return;
+  }
   if (e.target.id !== "searchClear" && !e.target.closest("#searchClear")) return;
   searchQuery = "";
   const si = document.getElementById("searchInput");
@@ -1077,11 +1172,6 @@ async function init() {
 
 init();
 
-// Menu button - toggle sidebar on mobile
-if (menuBtn) {
-  menuBtn.addEventListener("click", toggleSidebar);
-}
-
 // Handle resize
 window.addEventListener("resize", () => {
   if (!isMobile()) closeSidebar();
@@ -1116,6 +1206,12 @@ function updateThemeIcon() {
 
 themeBtn?.addEventListener("click", () => setTheme(!isDark));
 
+document.documentElement.setAttribute("data-density", densityMode);
+syncDensityBtn();
+document.getElementById("densityBtn")?.addEventListener("click", () => {
+  setDensity(isCompactDensity() ? "comfy" : "compact");
+});
+
 // Sort button
 const sortBtn = document.getElementById("sortBtn");
 sortBtn?.addEventListener("click", () => {
@@ -1138,32 +1234,6 @@ window.addEventListener("scroll", () => {
 scrollTopBtn?.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
-
-// Toast notification
-function showToast(message, duration = 2000) {
-  if (!toast) return;
-  toast.textContent = message;
-  toast.classList.add("visible");
-  setTimeout(() => {
-    toast.classList.remove("visible");
-  }, duration);
-}
-
-// Copy to clipboard helper
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    showToast("Copied to clipboard!");
-  }).catch(() => {
-    // Fallback
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    document.body.removeChild(ta);
-    showToast("Copied to clipboard!");
-  });
-}
 
 function getGitHubRepo() {
   const host = location.hostname;
