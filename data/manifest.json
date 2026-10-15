@@ -2,6 +2,11 @@
   "listening": {
     "HACKER": [
       "data/listening/l-hacker-keys.json"
+    ],
+    "YBM": [
+      "data/listening/l-ybm-vol-1.json",
+      "data/listening/l-ybm-vol-2.json",
+      "data/listening/l-ybm-vol-3.json"
     ]
   },
   "reading": {
