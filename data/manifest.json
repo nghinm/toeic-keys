@@ -5,6 +5,7 @@
     ],
     "YBM": [
       "data/listening/l-ybm-vol-1.json",
+      "data/listening/l-ybm-vol-2-2026.json",
       "data/listening/l-ybm-vol-2.json",
       "data/listening/l-ybm-vol-3.json"
     ]
@@ -15,6 +16,7 @@
     ],
     "YBM": [
       "data/reading/r-ybm-vol-1.json",
+      "data/reading/r-ybm-vol-2-2026.json",
       "data/reading/r-ybm-vol-2.json",
       "data/reading/r-ybm-vol-3.json"
     ]
